@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{fp}
+\input pstfig
+\begin{document}
+\vspace*{3cm}
+$
+\def\myR{2.5}
+\def\myr{1.8}
+\def\myrate{3.5}
+\def\myH{2.4}
+\FPeval\myHH{round(\myH / (\myR - \myr) * \myR  : 4)}
+\FPeval\myRr{round(\myR / \myrate : 4)}
+\FPeval\myrr{round(\myr / \myrate : 4)}
+\pnode(0,0){O}
+\pnode(\myR, 0){A}
+\pnode(-\myR, 0){B}
+\pnode(\myr, \myH){C}
+\pnode(-\myr, \myH){D}
+\pnode(0, \myHH){S}
+\pnode(0, \myH){P}
+\psellipticarc(O)(\myR, \myRr){180}{0}
+\psellipse(P)(\myr, \myrr)
+\pcline(A)(C)
+\pcline(B)(D)
+\Aput{l}
+\thinline\dashline
+\psellipticarc(O)(\myR, \myRr){0}{180}
+\psline(C)(S)(D)
+\pcline(B)(O)
+\nLput[offset=1.3ex](B)(O){0.6}{R_1}
+\pcline(P)(O)
+\Aput{H}
+\solidline
+\pcline(D)(P)
+\nLput[offset=1.1ex](D)(P){0.8}{R_2}
+$
+\end{document}

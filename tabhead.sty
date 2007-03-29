@@ -1,0 +1,68 @@
+%	tabhead.sty   coded by Dian Yin
+%	Version:	1.1 
+%	History:	2006.4.24.	Version:1.0 beta.
+%					I've been working on it for about 3days. Using rotatebox and rule. 
+%					However, it cannot place neatly. Now considering using picture.
+%					So this version is obsolete.
+%			2006.4.24.	Version:1.1
+%					Recoded tabhead using picture environment and pict2e. Neat!
+%					Note: don't use vcenter! it will change the baseline, which may result
+%					unnecessary vertical spaces.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tabhead}[2006/4/21 tabheadslash tabheadbackslash headtable env]
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{pict2e}}
+\ProcessOptions\relax
+\RequirePackage{pict2e}
+\makeatletter
+\def\vstrut#1#2{\hbox{\vrule height #1 depth #2 width 0pt\relax}}
+\def\dimtonum#1#2{\newdimen\tmpdimen\tmpdimen=#1\tab@dimtonum\tmpdimen{#2}}
+\def\tab@dimtonum#1#2{\edef#2{\tab@@dimtonum#1}}
+\def\tab@@dimtonum#1{\expandafter\tab@@@dimtonum\the#1}
+{\catcode`\p=12 \catcode`\t=12 \global\@namedef{tab@@@dimtonum}#1pt{#1}}
+\def\tabhead@slash#1#2{%
+	\pIIe@moveto\z@\z@
+	\pIIe@lineto{#1}{#2}%
+	\pIIe@strokeGraph
+}
+\def\tabhead@backslash#1#2{%
+	\pIIe@moveto{#1}{0pt}%
+	\pIIe@lineto{0pt}{#2}%
+	\pIIe@strokeGraph
+}
+\newcommand{\tabhead}[6]{%
+	\vrule width 0pt\nobreak
+	\hskip -\tabcolsep
+	\dimtonum{#1}\mywidth
+	\dimtonum{#2}\myheight
+	\dimtonum{#3}\mydepth
+	\dimtonum\tabcolsep\mytabcolsep
+	\newdimen\tmpdima
+	\tmpdima=#2
+	\advance\tmpdima by #3
+	\dimtonum\tmpdima\mytotalheight
+	\divide\tmpdima by 2
+	\dimtonum\tmpdima\myhalfheight
+	\newbox\tmpboxa
+	\newbox\tmpboxb
+	\newbox\tmpboxc
+	\setbox\tmpboxa=\hbox{#4}%
+	\setbox\tmpboxb=\hbox{#5}%
+	\setbox\tmpboxc=\hbox to #1{%
+		\setlength{\unitlength}{1pt}%
+		\begin{picture}(\mywidth,\mytotalheight)%(\mytabcolsep,0)%
+			\linethickness{\arrayrulewidth}%
+			\@nameuse{tabhead@#6}{\mywidth 1pt}{\mytotalheight 1pt}%
+			\put(0,\myhalfheight){\makebox(0,0)[l]{\box\tmpboxa}}%
+			\put(\mywidth,\myhalfheight){\makebox(0,0)[r]{\box\tmpboxb}}%
+		\end{picture}%
+	}%
+	\raise -#3\box\tmpboxc
+	\hskip -\tabcolsep
+	\hskip 0pt
+}
+\newcommand{\tabheadslash}[5]{\tabhead{#1}{#2}{#3}{#4}{#5}{slash}}
+\newcommand{\tabheadbackslash}[5]{\tabhead{#1}{#2}{#3}{#4}{#5}{backslash}}
+\makeatother
+\newenvironment{headtable}[5]{\bgroup\arraycolsep=0pt\tabcolsep=0pt\begin{tabular}{@{\vstrut{#1}{#2}}>{\hfil}m{#3}
+	*{#4}{@{\hskip -\arrayrulewidth}|>{\hfil}m{#5}<{\hfil}}@{\hskip -\arrayrulewidth}}}{\end{tabular}\egroup}
+\endinput

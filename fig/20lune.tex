@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage{fp}
+\input pstfig
+\begin{document}
+$
+\def\mytheta{130}
+\FPeval\myangA{round( (180 - \mytheta) / 2 : 4)}
+\FPeval\myangB{round( \myangA + \mytheta : 4)}
+\def\myR{3}
+\pnode(0,0){O}
+\pnode(\myR; \myangA){A}
+\pnode(\myR; \myangB){B}
+\pnode(\myR; 90){H}
+\psarc(O){\myR}{\myangA}{\myangB}
+\pcline(A)(B)
+\psset{labelsep=0.2ex}
+\Aput{b}
+\thinline
+\pcline(H)(H|B)
+\Aput{h}
+\dashline
+\psline(A)(O)(B)
+\noneline
+\pcline(O)(A)
+\psset{labelsep=0ex}
+\Bput{R}
+\uput{0.2}[90](O){\theta}
+$
+\end{document}
+

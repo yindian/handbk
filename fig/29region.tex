@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage{CJK}
+\usepackage{amsmath}
+\input pstfig
+\def\tg{\mathop{\mathrm{tg}}}
+\def\ctg{\mathop{\mathrm{ctg}}}
+\begin{document}
+\begin{CJK*}{GBK}{fs}
+$
+\thinline
+\pnode(0,0){O}
+\def\xmin{-3.5}	\def\xmax{3.5}
+\def\ymin{-2.2}	\def\ymax{2.2}
+\psaxes[labels=none,ticks=none,arrowlength=5,arrowinset=0.2,arrowsize=1.8pt]{->}(0,0)(\xmin,\ymin)(\xmax,\ymax)
+\uput{0.2ex}[0](\xmax,0){x}
+\uput{0.8ex}[-30](0,\ymax){y}
+\Rput{1.5}[bl](O){\hbox{\sl I}}
+\Rput{1.5}[br](O){\hbox{\sl II}}
+\Rput{1.5}[tr](O){\hbox{\sl III}}
+\Rput{1.5}[tl](O){\hbox{\sl IV}}
+\uput{1.1}[32](O){\hbox{Θ«~ Με}}
+\jot=0pt
+\uput{1.1}[158](O){\begin{aligned}\sin x&\\\csc x&\end{aligned}}
+\uput{1.1}[-158](O){\begin{aligned}\tg x&\\\ctg x&\end{aligned}}
+\uput{1.1}[-22](O){\begin{aligned}\cos x&\\\sec x&\end{aligned}}
+\thickline
+$
+\end{CJK*}
+\end{document}

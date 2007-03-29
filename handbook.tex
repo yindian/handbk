@@ -1,0 +1,1096 @@
+%	Mathematical Handbook, typeset by Dian Yin
+%	Hist:	05.11.2.	Noon and afternoon. Finished template of header, titlesec, titletoc. What a tough work!
+%				Evening, solved problem that pdflatex cannot use truetype fonts. Just run ``mkfntmap''.
+%		06.4.4.  	These days I've been occasionally updating this handbook, tabstop.sty written, pstricks
+%				figures drawn, inline equation lineskip set, \nfrac defined, amsmath's cmex8 problem 
+%				solved, etc.
+%		06.4.20.	These days I've been working on this handbook. Picture drawing using pstricks + fp.
+%				Fixed paper headline. Added Debug info. Now it's time for Chapter 3. Planar Trigonometry.
+%		06.4.25.	Fixed printing problem of cmex8 font. Abandoned the use of dvipdfmx. Use dvips + pdfwrite.
+%	In order not to have page breaks, use section instead of chapter
+\documentclass{article}
+\newif\ifdebug
+\newif\ifdvipdfm
+\newif\ifdohyperref
+\debugfalse
+\dvipdfmfalse
+\dohyperreftrue
+%	Chinese support and fonts
+\usepackage{CJK, CJKpunct, CJKnumb}
+\usepackage{mathcjk}
+\usepackage{type1cm}
+\usepackage{helvet}
+\begin{CJK*}{GBK}{song}
+\end{CJK*}
+\setlength{\lineskiplimit}{1ex}
+\setlength{\lineskip}{1.2ex plus 0.5pt minus 3pt}
+\newcommand{\textls}{\texttt{[}}
+\newcommand{\textrs}{\texttt{]}}
+\newcommand{\ens}[1]{\textls{\CJKfamily{hei}#1}\textrs}
+
+%	Pagestyle
+\ifdvipdfm
+\usepackage[twoside,paperwidth=9.125cm,paperheight=13.28125cm,textwidth=7.9cm,textheight=10.5cm,footskip=1.5em,headsep=1.5em,
+	includeheadfoot,bindingoffset=0.2cm,dvipdfm]{geometry}
+\else
+\usepackage[twoside,paperwidth=9.125cm,paperheight=13.28125cm,textwidth=7.9cm,textheight=10.5cm,footskip=1.5em,headsep=1.5em,
+	includeheadfoot,bindingoffset=0.2cm,dvips]{geometry}
+\fi
+\ifdohyperref
+\ifdvipdfm
+\usepackage[unicode,CJKbookmarks,dvipdfm]{hyperref}
+\else
+\usepackage[unicode,CJKbookmarks,dvips,breaklinks=true]{hyperref}
+\fi
+\hypersetup{%
+	bookmarksopen,bookmarksnumbered,bookmarksopenlevel=2,pdfstartview=FitH,
+	linkbordercolor=0 1 1,
+	pdftitle=Handbook of Mathematics (Chinese),
+	pdfauthor=Beijing Kuangye Xueyuan Advanced Mathematics Teaching and Researching Group,
+	pdfsubject=A compact reference book of Mathematics,
+	pdfkeywords=mathematics handbook reference chinese,
+	pdfcreator=USTC TeX User Group
+}
+\fi
+\usepackage{lscape}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\sectionmark}[1]{\markboth{~\CJKnumber{\arabic{section}}、#1}{\CJKnumber{\arabic{section}}、#1~}}
+\renewcommand{\subsectionmark}[1]{\markright{\thesubsection. #1~}}
+\fancyhead[LO,RE]{\fontsize{8}{9}\selectfont \CJKfamily{fs}\ 数学手册\ }
+\fancyhead[RO]{\fontsize{8}{9}\selectfont \rightmark}
+\fancyhead[LE]{\fontsize{8}{9}\selectfont \leftmark}
+\fancyfoot[RO,LE]{\itshape\fontsize{9}{11}\selectfont\thepage}
+
+%	Section title setting
+\usepackage{titlesec}
+\titleformat{\section}{\fontsize{11}{13}\selectfont \centering \CJKfamily{song}}{\CJKnumber{\arabic{section}}、}{1ex}{}
+\titlespacing{\section}{0em}{10pt plus 2pt minus 5pt}{5pt plus 2pt minus 2pt}
+\titleformat{\subsection}{\fontsize{10}{12}\selectfont \centering \CJKfamily{fs}}{\arabic{subsection}.}{1em}{}
+\titlespacing{\subsection}{0em}{3pt plus 3pt}{2pt plus 1pt}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+%\newcommand{\subsectionbreak}{\vspace{0pt}}
+\titleformat{\subsubsection}{\fontsize{9}{10}\selectfont \CJKfamily{hei} \sffamily}{(\arabic{subsubsection})}{1ex}{}
+\titlespacing{\subsubsection}{\parindent}{1pt plus 1pt}{0em}
+\renewcommand{\thesubsubsection}{\arabic{subsubsection}}
+%\newcommand{\subsubsectionbreak}{\vspace{0pt}}
+
+%	Table of Contents setting
+\usepackage{titletoc}
+\renewcommand{\contentsname}{目\quad次}		% contentsname use section format
+\contentsmargin[2em]{0em}
+\titlecontents{section}[0.5cm] {\addvspace{0.2cm}\centering\CJKfamily{hei}} {\CJKnumber{\thecontentslabel}、} {} {}
+\titlecontents{subsection}[0.5cm]{}{\contentslabel[\hfill\thecontentslabel.\hfill]{1.5em}} {}
+	{\titlerule*[1ex]{$\oldcdot$}\thecontentspage}
+\titlecontents*{subsubsection}[0.6cm] {\fontsize{8}{9}\selectfont} {(\thecontentslabel)} {}
+	{［\thecontentspage］\hspace{1em plus 2pt minus 3pt}}
+
+%	Math
+\usepackage{amsmath}
+\usepackage{amssymb, bm}
+\usepackage{textcomp}
+\newcommand{\degrees}{\ensuremath{\mbox{\textdegree}}}
+\newcommand{\nfrac}[2]{ {\displaystyle\frac{\raisebox{-0.5ex}{\ensuremath{#1}}}{\raisebox{0.2ex}{\ensuremath{#2}}}} }
+\let\oldnfrac\nfrac
+\renewcommand{\nfrac}[2]{\mathchoice{\oldnfrac{#1}{#2}}{\oldnfrac{#1}{#2}}{\frac{#1}{#2}}{\frac{#1}{#2}}}
+\makeatletter
+\def\nmatrix{\vcenter\bgroup\hbox\bgroup\catcode`\&=4 $\arraycolsep=0.9ex\def\arraystretch{1.3}\env@matrix}
+\def\endnmatrix{\endmatrix$\egroup\egroup}
+\def\ndetmat{\relax\left|\nmatrix}
+\def\endndetmat{\endnmatrix\right|\relax}
+\let\oldcdot\cdot
+\def\cdot{\bm\oldcdot}
+\def\quad{\vrule width 0pt\nobreak\hskip 1em\relax}
+\def\qquad{\vrule width 0pt\nobreak\hskip 2em\relax}
+\def\tg{\mathop{\mathrm{tg}}}
+\def\ctg{\mathop{\mathrm{ctg}}}
+\def\arcsin{\mathop{\mathrm{arc}\;\mathrm{sin}}}
+\def\arccos{\mathop{\mathrm{arc}\;\mathrm{cos}}}
+\def\arctg {\mathop{\mathrm{arc}\;\mathrm{tg}}}
+\def\arcctg{\mathop{\mathrm{arc}\;\mathrm{ctg}}}
+\def\arcsec{\mathop{\mathrm{arc}\;\mathrm{sec}}}
+\def\arccsc{\mathop{\mathrm{arc}\;\mathrm{csc}}}
+\makeatother
+%	Figures
+\ifdvipdfm
+\usepackage[dvipdfm]{pict2e}
+\usepackage[dvipdfm]{epsfig}
+\else
+\usepackage[dvips]{pict2e}
+\usepackage[dvips]{epsfig}
+\fi
+\usepackage{wrapfig}
+\usepackage{picins}
+%	Tabulars
+\usepackage{booktabs}
+\usepackage{calc}
+\usepackage{array}
+\usepackage{tabhead}
+\usepackage{tabularx}
+\aboverulesep=0pt
+\belowrulesep=0pt
+\def\vstrut#1#2{\vrule height #1 depth #2 width 0pt\relax}
+%	Compact list
+\usepackage{paralist}
+\usepackage{tabstop}
+%\setlength{\parindent}{0pt}
+
+
+\begin{document}
+\begin{CJK*}{GBK}{song}
+%\CJKtilde
+%\CJKglue
+%\zhfssix
+\setlength{\abovedisplayskip}{0pt}	% set the display equations' skips to zero
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}
+\setlength{\belowdisplayshortskip}{0pt}
+\fontsize{9}{9}\selectfont	% Select the font that fits the toc 
+\tableofcontents
+\cleardoublepage
+\setcounter{page}{1}
+\fontsize{8}{9}\selectfont	% Select the font that fits the main text 
+\renewcommand{\baselinestretch}{1.6}
+\CJKindent
+\ifdebug
+\message{Start main text..}
+\tracingmacros=1\tracingonline=1\nonstopmode
+\fi
+
+\section[初等代数]{初~等~代~数}
+\subsection{乘法及因式分解公式}
+\begin{compactenum}[\indent(1)]
+	\item $(x+a)(x+b)=x^2+(a+b)x+ab$.
+	\item $(a \pm b)^2 = a^2 \pm 2ab + b^2$.
+	\item $(a \pm b)^3 = a^3 \pm 3a^2b + 3ab^2 \pm b^3$.
+	\item $(a+b+c)^2 = a^2 + b^2 + c^2 + 2ab + 2bc + 2ca$.
+	\item $a^2 - b^2 = (a-b)(a+b)$.
+	\item $a^3 \mp b^3 = (a \mp b)(a^2 \pm ab + b^2)$.
+	\item $a^n - b^n = (a-b) (a^{n-1}+a^{n-2}b + a^{n-3}b^2 + \cdots + ab^{n-2} + b^{n-1})$.
+	\item $a^n - b^n = (a+b) ( a^{n-1} - a^{n-2}b + a^{n-2}b^3 - \cdots + ab^{n-2} - b^{n-1}$，$n=$ 偶数。
+	\item $a^n + b^n = (a+b) (a^{n-1} - a^{n-2}b + a^{n-3}b^2 - \cdots - ab^{n-2} + b^{n-1}$，$n=$ 奇数。
+	\item $a^3 + b^3 + c^3 - 3ab= (a+b+c)(a^2 + b^2 + c^2 - ab - bc - ca)$.
+\end{compactenum}
+\subsection[分式]{分~~式}
+\subsubsection{分式运算}
+\break
+\begin{compactenum}[\indent 1)]
+	\item \setts 加减法：\hspace*{6em}&$\nfrac{a}{b}\pm \nfrac{c}{b} = \nfrac{a \pm c}{b}$\endl
+		\usets & $\nfrac{a}{b}\pm \nfrac{c}{d} = \nfrac{ad \pm bc}{bd}$\ok
+	\item \usets 乘法：&$\nfrac{a}{b} \times \nfrac{c}{d} = \nfrac{a \times c}{b \times d}.$\ok
+	\item \usets 除法：& $\nfrac{a}{b} \div \nfrac{c}{d} = \nfrac{a}{b} \times \nfrac{d}{c}.$\ok
+	\item \usets 乘方：& $\left( \dfrac{a}{b}\right)^n = \dfrac{a^n }{b^n}.$\ok
+	\item \usets 开方：& $\sqrt[n]{\dfrac{a}{b}} = \nfrac{\sqrt[n]{a}}{\sqrt[n]{b}}.$\ok
+\end{compactenum}
+\subsubsection{分项分式}
+在以下各式中，等号左边都是真分式：
+\begin{compactenum}[\indent 1)]
+	\item $\nfrac{A}{(x-a)(x-b)(x-c)} = \nfrac{A_1}{x-a} + \nfrac{A_2}{x-b} + \nfrac{A_3}{x-c},$\\
+	\centerline{$A_1, A_2, A_3$都是常数。}
+	\item $\nfrac{A}{(x-a)^3} = \nfrac{A_1}{x-a} + \nfrac{A_2}{(x-a)^2} + \nfrac{A_3}{(x-a)^3},$\\
+	\centerline{$A_1, A_2, A_3$ 都是常数。}
+	\item $\nfrac{A}{PQR^3} = \nfrac{A_1}{P} + \nfrac{A_2}{Q} + \nfrac{B_1}{R} + \nfrac{B_2}{R^2} + 
+		\nfrac{B_3}{R^3},$\\[2pt]
+	\setts 其中\quad & $P,Q,R$ 是一次式或二次质因式，\endl
+	\usets &$A_1, A_2$ 分别比\ $P, Q$ 的次数低一次，\endl
+	\usets &$B_1, B_2, B_3$ 都比\ $R$ 的次数低一次。\ok
+\end{compactenum}
+\subsection[比例]{比~~例}
+设\ $a:b = c:d$ 或\ $\nfrac{a}{b} = \nfrac{c}{d}$， 则：
+\begin{compactenum}[\indent (1)]
+	\item $ad = bc$ （内项积等于外项积）。
+	\item $b:a = d:c$ （反比也相等）。
+	\item $a:c = b:d$ \quad $d:b = c:a$ （更比）。
+	\item \hspace*{5em}$\nfrac{a+b}{b} = \nfrac{c+d}{d}$ （合比）。
+	\item \hspace*{5em}$\nfrac{a-b}{b} = \nfrac{c-d}{d}$ （分比）。
+	\item \hspace*{5em}$\nfrac{a+b}{a-b} = \nfrac{c+d}{c-d}$ （合分比）。
+	\item 设 \hspace*{3em} $\nfrac{a}{b} = \nfrac{c}{d} = \nfrac{e}{f} $，则：
+	$$\frac{a}{b} = \frac{la + mc + ne}{lb + md + nf} = \frac{\sqrt{a^2 + c^2 + e^2}}{\sqrt{b^2 + d^2 + f^2}}.$$
+	\item 若\ $y$ 与\ $x$ 成正比（或写为\ $y \propto x$），则：\\
+	$\nfrac{y}{x} = k$ 或\ $y = kx$ （其中\ $k$ 为比例常数，以下同）。
+	\item 若\ $y$ 与\ $x$ 成反比$\Big($或写为\ $y \propto \nfrac{1}{x}\Big)$，则：
+		$$y:\frac{1}{x} = k \text{~或~} xy=k$$
+	\item 若\ $y$ 与\ $x$ 成正比，$y$ 与\ $z$ 也成正比（或写为\ $y \propto x,\, y\propto z$），则：
+		$$y \propto xz \text{~或~} y=kxz$$
+\end{compactenum}
+\subsection{不等式}
+\subsubsection{基本不等式}
+设\ $a>b$，（1--4），则：
+\begin{compactenum}[\indent 1)]
+	\item \setts \hspace*{6em} & $ac>bc$, \quad & $(c>0)$.\endl
+		\usets & $ac<bc$, & $(c<0)$.\ok
+	\item \usets & $\dfrac{a}{c} > \dfrac{b}{c}$, & $(c>0)$.\endl
+		\usets & $\dfrac{a}{c} < \dfrac{b}{c}$, & $(c<0)$.\ok
+	\item \hfill $a^n>b^n$,\quad $(n>0,\,a>0,\,b>0)$. \hfill~
+	\item \hfill $\sqrt[n]{a}>\sqrt[n]{b}$,\quad $(n\,\text{为正整数},\,a>b>0)$. \hfill~
+	\item 设\ $\nfrac{a}{b}<\nfrac{c}{d}$，且\ $b$，$d$ 同号则：\\
+		\usets & $\nfrac{a}{b}<\nfrac{a+c}{b+d}<\nfrac{c}{d}$.\ok
+\end{compactenum}
+\subsubsection{绝对不等式}
+设以下各量都是正值，则：
+\begin{compactenum}[\indent 1)]
+	\item \setts \hspace*{3em} & $\nfrac{a+b}{2} \geqslant \sqrt{ab}$, $\nfrac{a+b+c}{3}\geqslant\sqrt[3]{abc}$，\endl
+		\usets & $\nfrac{a+b+c+\dots+l}{n}\geqslant\sqrt[n]{abc\times\dots\times l}$，\endl
+		\usets & \quad $(a,b,c,\dots,l\text{ 共\ }n\text{ 个，下同})$。\ok
+	\item $\left(\dfrac{a\!+\!b\!+\!c\!+\!\dots\!+\!l}{n}\right)^r\! \lessgtr
+		\dfrac{a^r\!+\!b^r\!+\!c^r\!+\!\dots\!+\!l^r}{n}$，
+		$(r\!\lessgtr\! l)$。
+\end{compactenum}
+\subsubsection{绝对值与不等式}
+\begin{compactenum}[\indent ~1)]
+	\item $\lvert A+B\rvert \leqslant \lvert A\rvert + \lvert B\rvert$.
+	\item $|A-B|\leqslant |A|+|B|$.
+	\item $|A-B|\geqslant |A|-|B|$.
+	\item $-|A|\leqslant A \leqslant |A|$.
+	\item $\sqrt{A^2}=|A|$，（根号规约）。
+	\item $|AB|=|A|\,|B|$，$\left\lvert \dfrac{A}{B}\right\rvert = \nfrac{|A|}{|B|}$.
+	\item 若\ $|A|\leqslant B$，而\ $B>0$，则：$-B\leqslant A \leqslant B$.
+\end{compactenum}
+\vspace*{4em minus 2em}
+\subsection[行列式]{行~列~式}
+\begin{compactenum}[\indent (1)]
+	\item \hfill $\ndetmat a_1 & b_1\\a_2 & b_2\endndetmat= a_1 b_2 - a_2 b_1$.
+			\hfill~
+		\vspace*{1em minus 1em}
+	\item \setts $\ndetmat
+			a_1 &b_1 &c_1\\
+			a_2 &b_2 &c_2\\
+			a_3 &b_3 &c_3
+			\endndetmat$\ok ${}=a_1\ndetmat b_2&c_2\\b_3&c_3\endndetmat -
+			a_2\ndetmat b_1&c_1\\b_3&c_3\endndetmat +
+				a_3\ndetmat b_1&c_1\\b_2&c_2\endndetmat$\\
+		\usets\ok ${}=a_1b_2c_3 - a_1b_3c_2 + a_2b_3c_1 - a_2b_1c_3 + a_3b_1c_2 - a_3b_2c_1$.
+
+		$
+			\vcenter{\hbox{\epsfig{file= fig/6figdet1.ps,scale=1}}}
+			\kern 1ex
+			\vcenter{\hbox{或}}
+			\kern 1.5ex
+			\vcenter{\hbox{\epsfig{file= fig/6figdet2.ps,scale=1}}}
+		$
+		
+		即，各实线上元素乘积之和减去各虚线上元素乘积之和。
+	\item $\ndetmat 
+		a_1 & b_1 & c_1\\
+		a_2 & b_2 & c_2\\
+		a_3 & b_3 & c_3
+		\endndetmat = \ndetmat
+		a_1 & a_2 & a_3\vphantom{b}\\
+		b_1 & b_2 & b_3\\
+		c_1 & c_2 & c_3\vphantom{b}
+		\endndetmat = - \ndetmat
+		a_1 & c_1 & b_1\\
+		a_2 & c_2 & b_2\\
+		a_3 & c_3 & b_3
+		\endndetmat $\\
+		$= \nfrac{1}{k} \ndetmat
+		k a_1 & b_1 & c_1\\
+		k a_2 & b_2 & c_2\\
+		k a_3 & b_3 & c_3
+		\endndetmat = \ndetmat
+		a_1+kb_1 & b_1 & c_1\\
+		a_2+kb_2 & b_2 & c_2\\
+		a_3+kb_3 & b_3 & c_3
+		\endndetmat $
+	\item $
+		\ndetmat
+		\hbox to 2ex{\hss 0\hss} & b_1 & c_1\\
+		0 & b_2 & c_2\\
+		0 & b_3 & c_3
+		\endndetmat = 0, \hfil \ndetmat
+		b_1 & b_1 & c_1\\
+		b_2 & b_2 & c_2\\
+		b_3 & b_3 & c_3
+		\endndetmat = 0, \hfil \ndetmat
+		k b_1 & b_1 & c_1\\
+		k b_2 & b_2 & c_2\\
+		k b_3 & b_3 & c_3
+		\endndetmat = 0 $
+	\item $\ndetmat
+		a_1 & b_1 & c_1\\
+		a_2 & b_2 & c_2\\
+		a_3 & b_3 & c_3
+		\endndetmat + \ndetmat
+		a_1' & b_1 & c_1\\
+		a_2' & b_2 & c_2\\
+		a_3' & b_3 & c_3
+		\endndetmat = \ndetmat
+		a_1+a_1' & b_1 & c_1\\
+		a_2+a_2' & b_2 & c_2\\
+		a_3+a_3' & b_3 & c_3
+		\endndetmat.$
+	\item $\ndetmat
+		a_1 & b_1 & c_1\\
+		a_2 & b_2 & c_2\\
+		a_3 & b_3 & c_3
+		\endndetmat \cdot \ndetmat
+		x_1 & y_1 & z_1\\
+		x_2 & y_2 & z_2\\
+		x_3 & y_3 & z_3
+		\endndetmat = \left|\nmatrix
+		a_1x_1 + a_2x_2 + a_3x_3\\
+		b_1x_1 + b_2x_2 + b_3x_3\\
+		c_1x_1 + c_2x_2 + c_3x_3
+		\endnmatrix\right.$
+		\allowbreak
+		$\left.\nmatrix
+		a_1y_1 + a_2y_2 + a_3y_3 & a_1z_1 + a_2z_2 + a_3z_3\\
+		b_1y_1 + b_2y_2 + b_3y_3 & b_1z_1 + b_2z_2 + b_3z_3\\
+		c_1y_1 + c_2y_2 + c_3y_3 & c_1z_1 + c_2z_2 + c_3z_3
+		\endnmatrix\right|.$
+\end{compactenum}
+
+{\indent \textls{\CJKfamily{hei}注}\textrs\quad(3)，(4)，(5)，(6) 的性质，在四阶以上也适用。}
+
+\subsection{一次方程组的解}
+\begin{compactenum}[\indent (1)]
+	\item $\left\{
+		\begin{aligned}
+			a_1 x + b_1 y &= c_1,\\
+			a_2 x + b_2 y &= c_2.
+		\end{aligned}
+		\right.$
+		$$x = \frac{\Delta_x}{\Delta},\qquad\quad y=\frac{\Delta_y}{\Delta},\qquad\quad (\Delta\neq0)$$\\
+		其中：$\Delta=\ndetmat a_1 &b_1\\a_2 &b_2\endndetmat$,\hfil
+		$\Delta_x=\ndetmat c_1 &b_1\\c_2 &b_2\endndetmat$,\hfil
+		$\Delta_y=\ndetmat a_1 &c_1\\a_2 &c_2\endndetmat$.
+	\item $\jot=0pt\left\{
+		\begin{aligned}
+			a_1x + b_1y + c_1z &= d_1,\\
+			a_2x + b_2y + c_2z &= d_2,\\
+			a_3x + b_3y + c_3z &= d_3.
+		\end{aligned}
+		\right.$
+		$$x = \frac{\Delta_x}{\Delta},\quad y=\frac{\Delta_y}{\Delta},\quad z=\frac{\Delta_z}{\Delta},\quad
+		(\Delta\neq0)$$\\
+		\setts 其中： $\Delta$& 
+			$
+			{} = \ndetmat
+				a_1 & b_1 & c_1\\
+				a_2 & b_2 & c_2\\
+				a_3 & b_3 & c_3
+			\endndetmat,\quad \Delta_x = \ndetmat
+				d_1 & b_1 & c_1\\
+				d_2 & b_2 & c_2\\
+				d_3 & b_3 & c_3
+			\endndetmat,
+			$\ok\\
+		\usets \hfill$\Delta_y$& $
+			{} = \ndetmat
+				a_1 & d_1 & c_1\\
+				a_2 & d_2 & c_2\\
+				a_3 & d_3 & c_3
+			\endndetmat,\quad \Delta_z = \ndetmat
+				a_1 & b_1 & d_1\\
+				a_2 & b_2 & d_2\\
+				a_3 & b_3 & d_3
+			\endndetmat.
+			$\ok
+	\item $\left\{\jot=0.5ex
+		\begin{aligned}
+			a_1x + b_1y + c_1z &= 0,\\
+			a_2x + b_2y + c_2z &= 0
+		\end{aligned}
+		\right.$\\ \hspace*{1em}
+		$
+		\nfrac{x}{\ndetmat b_1 & c_1 \\ b_2 & c_2
+		\endndetmat} = \nfrac{y}{\ndetmat c_1 & a_1 \\ c_2 & a_2
+		\endndetmat} = \nfrac{z}{\ndetmat a_ 1 & b_1 \\ a_2 & b_2
+		\endndetmat} = k
+		$.
+\end{compactenum}
+\subsection{二次方程\ $ax^2 + bx + c$}
+\subsubsection[根]{根：\hspace*{2em} $x_{1,2}$${} = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}$. }
+\setbox0=\hbox{\setts \hspace*{6em} $x_{1,2}$&${} = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}$. \ok}
+\subsubsection[根与系数的关系]{根与系数的关系：}
+\usets \hfill $x_1 + x_2$&${}= -\nfrac{b}{a},\quad x_1x_2 = \nfrac{c}{a}.$\ok
+\subsubsection{判别式}
+\usets \hfill $b^2 - 4ac$&\catcode`\&=4
+	$\begin{cases}
+		>0 & \text{二实根，不等，}\\
+		=0 & \text{二实根，相等，}\\
+		<0 & \text{二虚根，共轭。}
+	\end{cases}$\catcode`\&=\active\ok
+\subsection{三次方程}
+\begin{compactenum}[\indent(1)]
+	\item \def\bs{\kern -0.5ex}
+		$x^3 - 1 = 0$.\\ $x_1 \bs=\bs 1$, \hfil$x_2 \bs=\bs \omega_1 \bs=\bs \nfrac{-1\bs+\bs\sqrt{-3}}{2}$,
+		\hfil$x_3 \bs=\bs \omega_2 \bs=\bs \nfrac{-1\bs-\bs\sqrt{-3}}{2}$.
+	\item $x^3 + ax^2 + bx + c = 0$.\\
+		命\ $x = y - \nfrac{a}{3}$ 代入，则得\ $y^2 + py + q = 0$,\\
+		设其根为：$y_1$, $y_2$, $y_3$，则：\\
+		\def\bs{\kern -0.3ex}
+		\def\Bs{\kern -0.8ex}
+		\def\bbs{\kern -0.2ex}
+		\def\leftfact{\sqrt[3]{\bs -\dfrac{q}{2}\bbs\bs+\Bs\sqrt{\bs \left(
+		\bs\dfrac{q}{2}\bbs\right)^{\Bs2}\Bs\bs+\Bs\left( \bs\dfrac{p}{3}\bbs \right)^{\Bs3}}}}
+		\def\rightfact{\sqrt[3]{\bs -\dfrac{q}{2}\bbs\bs-\Bs\sqrt{\bs \left( \bs\dfrac{q}{2}\bbs
+		\right)^{\Bs2}\Bs\bs+\Bs\left( \bs\dfrac{p}{3}\bbs \right)^{\Bs3}}}}
+		$%\def\thinspace{}\def\medspace{}\def\thickspace{}\thinmuskip=0mu\medmuskip=0mu\thickmuskip=0mu 
+		y_1 \bs=\bs \leftfact \bs+ \Bs\rightfact,$\\
+		$ y_2 \bs=\bs \omega_1\Bs\leftfact+ \omega_2\Bs\rightfact,$\\
+		$ y_3 \bs=\bs \omega_2\Bs\leftfact+ \omega_1\Bs\rightfact.$
+\end{compactenum}
+\subsection{级数}
+\subsubsection{等差级数}
+设首项${}=a_1$，公差${}=d$，项数${}=n$，第\ $n$ 项${}=a_n$，则：
+\begin{compactenum}[\indent ~1)]
+	\item \setts 通项 \hspace*{3em} & $a_n = a_1 + (n-1)d$.\ok
+	\item \usets 前\ $n$ 项和 & $s_n = \nfrac{a_1 + a_n}{2}n = na_1 + \nfrac{n(n-1)}{2}d$.\ok
+	\item \usets 等差中项 & 若\ $a$, $b$, $c$ 成等差级数，则：\endl
+		\usets & ~$b=\nfrac{1}{2}(a+c)$.\ok
+\end{compactenum}
+\subsubsection{等比级数}
+设首项${}=a_1$，公比${}=d$，项数${}=n$，第\ $n$ 项${}=a_n$，则：
+\begin{compactenum}[\indent ~1)]
+	\item \setts 通项 \hspace*{3em} & $a_n = a_1 q^{n-1}$.\ok
+	\item 前\ $n$ 项和\\
+		$s_n = \nfrac{a_1-a_nq}{1-q} = \nfrac{a_1(1-q^n)}{1-q}=\nfrac{a_1(q^n-1)}{q-1}$.
+	\item \usets 等比中项 & 若\ $a$, $b$, $c$ 成等比级数，则：\ok $$b = \pm \sqrt{ac}.$$
+	\item 无穷递减等比级数的和：
+		$$s = \nfrac{a_1}{1-q},\qquad(|\hbox to 1.5ex{\hfil$q$\hfil\hfil}|<1).$$
+\end{compactenum}
+\subsubsection{调和级数}
+设\ $a$, $b$, $c$ 成调和级数，则：
+\begin{asparaenum}[\indent ~1)]
+	\item \hfil $a-b:b-c=a:c$.\hfil
+	\item 调和中项 \hfil $b=\nfrac{2ac}{a+c}$.\hfil\hfil\hfil
+	\item \hfil $\nfrac{1}{a}$, $\nfrac{1}{b}$, $\nfrac{1}{c}$ 成等差级数。\hfil
+	\item \hfil $a-\nfrac{b}{2}$, $b-\nfrac{b}{2}$, $c-\nfrac{b}{2}$ 成等比级数。
+	\item 设\ $A$,$G$,$H$ 分别表二数的等差中项，等比中项与调和中项，则：
+		\[ AH = G^2.\]
+\end{asparaenum}
+\subsubsection{杂级数}
+\vspace*{-2ex}
+\begin{compactenum}[\indent ~1)]
+	\delimiterfactor=600 
+	\item $1+2+3+\dots+n = \nfrac{1}{2}(1+n)n$.
+	\item $1^2 + 2^2 + 3^2 + \dots+ n^2 = \nfrac{1}{6}n(n+1)(2n+1)$.
+	\item $1^3 + 2^3 + 3^3 + \dots+ n^3 = \left[ \nfrac{1}{2}n(n+1) \right]^2$.
+	\item $1\cdot 2 + 2\cdot3 + 3\cdot4 + \dots + n(n+1) = \nfrac{1}{3}n(n+1)\cdot(n+2)$.\\
+		$1\cdot2\cdot3 + 2\cdot3\cdot4 + 3\cdot4\cdot5 + \dots+ n(n+1)(n+2)$\\\nopagebreak
+		\hspace*{2em} $=\nfrac{1}{4}n(n+1)(n+2)(n+3)$.\\
+		$\sum\limits_{i=1}^n\left( \prod\limits_{j=0}^{r-1}(j+i) \right) = \nfrac{1}{r+1}
+		\prod\limits_{j=0}^r(n+j)$.
+	\item $\nfrac{1}{1\cdot2} + \nfrac{1}{2\cdot3} + \nfrac{1}{3\cdot4} + \dots + \nfrac{1}{n(n+1)} = 1 -
+		\nfrac{1}{n+1}$.\\
+		$\nfrac{1}{1\cdot2\cdot3} + \nfrac{1}{2\cdot3\cdot4} + \nfrac{1}{3\cdot4\cdot5} + \dots +
+		\nfrac{1}{n(n+1)(n+2)}$\\\nopagebreak
+		\hspace*{2em} $=\nfrac{1}{2} \left( \nfrac{1}{1\cdot2} - \nfrac{1}{(n+1)(n+2)} \right)$.\\
+		$\sum\limits_{i=1}^r\left( \prod\limits_{j=0}^r \nfrac{1}{i+j} \right) = \nfrac{1}{r} \left(
+		\prod\limits_{j=1}^r \nfrac{1}{j} - \prod\limits_{j=1}^r \nfrac{1}{n+j} \right)$.
+\end{compactenum}
+\subsection[指数]{指~ ~数}
+\begin{inparaenum}[(1)]
+	\setts \item $a^m \cdot a^n = a^{m+n}$.  \qquad & \item $a^m \div a^n = a^{m-n}$.  \ok\par
+	\usets \item $(a^m)^n = a^{mn}$. & \item $(ab)^m = a^m b^m$.\ok\par
+	\usets \item $\left( \nfrac{a}{b} \right)^m = \nfrac{a^m}{b^m}$. & $a^{\frac{m}{n}} = \sqrt[n]{a^m} = ( \!\sqrt[n]{a}
+	\,)^m$.\ok\par
+	\usets \item $a^0 = 1$. & \item $a^{-m} = \nfrac{1}{a^m}$.\ok
+\end{inparaenum}
+\subsection[对数]{对~ ~数}
+\hspace*{2em}$a>0$, $a\neq 1$,
+\begin{asparaenum}[\indent (1)]
+	\item 若\ $a^x = M$，则\ $\log_a\! M = x$.
+	\item 对数恒等式：$a^{\log_a \!M} = M$.
+	\item 1 的对数为零，\quad $\log_a \!1 = 0$.
+	\item 底的对数为\ 1，\quad $\log_a \!a = 1$.
+	\item $\log_a (MN) = \log_a\!M + \log_a\!N$.
+	\item $\log_a \!\left( \nfrac{M}{N} \right) = \log_a\!M - \log_a\!N$.
+	\item $\log_a(M^n) = n\log_a\!M$.
+	\item $\log_a\!\!\sqrt[n]{M} = \nfrac{1}{n}\log_a\!M$.
+	\item 换底公式：\quad $\log_a\!M = \nfrac{\log_b\!M}{\log_b\!a}$.
+		\begin{asparaenum}[\hspace*{3em} 1)]
+			\item $\log_a\!b \cdot \log_b\!a = 1$.
+			\item $\log M = 0.4343 \ln M$.
+			\item $\ln M = 2.3026 \log M$.
+		\end{asparaenum}
+	\item 常用对数首数的求法（尾数由对数表查出）。
+		\begin{asparaenum}[\hspace*{3em} 1)]
+			\item 大于\ 1 的真数,对数的首数为正,其值比整数位数少~1。
+			\item 小于\ 1 的真数,对数的首数为负；它的绝对值等于真数首位有效数字左面零的个数（包括小数点前的一
+				个零）。
+		\end{asparaenum}
+\end{asparaenum}
+\subsection{虚数及复数}
+\subsubsection{虚数单位的乘方}
+\hfil$ i= \sqrt{-1}$, $i^2 = -1$, $i^3 = -i$, $i^4 = 1$\hfill\par
+\hfil$ i^{4n+1} = i$, $i^{4n+2}=-1$, $i^{4n+3} = -i$, $i^{rn} = 1$\hfill
+\subsubsection{复数的三角函数式与代数式的关系}
+\begin{inparaenum}[1)]
+	\item $ \left\{\begin{aligned} a&=r\cos\phi\\b &= r\sin\phi \end{aligned}\right.$
+		\qquad\qquad
+	\item $ \left\{\begin{aligned} &r = \sqrt{a^2 + b^2}\\ &\tg \phi = \nfrac{b}{a} \end{aligned}\right.$
+		\par
+		\centerline{{\epsfig{file= fig/13complex.ps, scale=0.8}}}
+	\item $a+bi = r(\cos\phi + i\sin\phi)$.
+\end{inparaenum}
+\subsubsection{复数的运算}
+\begin{inparaenum}[1)]
+	\item 代数式 \par
+		$(a+bi) \pm (c+di) = (a\pm c) + (b\pm d)i$.\par
+		$(a+bi)(c+di) = (ac-bd) + (bc+ad)i$.\par
+		$(a+bi) \div (c+di) = \nfrac{ac+bd}{a^2 + d^2} + \nfrac{bc - ad}{c^2 + d^2}i $.\par
+	\item 三角式 \par
+		设\ $A= R(\cos\alpha + i\sin\alpha)$, $B= r(\cos\beta + i\sin\beta)$，则：\\
+		\setts \hspace*{5em} & $AB = Rr[ \cos(\alpha+\beta) + i\sin(\alpha+\beta)]$.\endl
+		\usets & $\nfrac{A}{B} = \nfrac{R}{r} [\cos(\alpha-\beta) + i\sin(\alpha-\beta)]$.\endl
+		\usets & $A^n = R^n [\cos n\alpha + i \sin n\alpha]$.\endl
+		\usets & $A^{\frac{1}{n}} = R^\frac{1}{n} \left[ \cos \nfrac{\alpha + 2k\pi}{n} + i\sin
+		\nfrac{\alpha + 2k\pi}{n} \right]$.\endl
+		\centerline{$k = 0, 1, 2, \dots, n-1.$}
+\end{inparaenum}
+\subsection{排列、组合与二项式公式}
+\subsubsection{排列}
+\[ A_m^n = m (m-1) (m-2) \dotsm [m - (n-1)]. \]
+\centerline{$A_m^n$ 为\ $m$ 个元素中取\ $n$ 个的排列。}
+\subsubsection{全取排列}
+\[ P_n = A_n^n = n (n-1) (n-2) \dotsm 3 \cdot 2 \cdot 1 = n!. \]\par
+其中：$n! = 1\cdot2\cdot3 \dotsm (n-1)n$ 叫\ $n$ 的阶乘。
+\subsubsection{组合}
+\begin{align*}
+	\qquad C_m^n &= \nfrac{A_m^n}{P_n} = \nfrac{m(m-1)(m-2)\dotsm[m-(n-1)]}{1\cdot 2\cdot 3\cdot\dotsb\cdot n}\\
+	&= \nfrac{P_m}{P_n P_{m-n}} = \nfrac{m!}{n! \,(m-n)!} = C_m^{m-n}
+\end{align*}
+\subsubsection{二项式公式}
+\begin{compactenum}[\indent ~1)]
+	\item $(a+b)^n = a^n + na^{n-1}b + \nfrac{n(n-1)}{2!}a^{n-2}b^2 $\\
+		$\hspace*{0.5em} + \nfrac{n(n-1)(n-2)}{3!} a^{n-3}b^3 $\\
+		$\hspace*{1em} +\dots+ \nfrac{n(n-1)\dotsm[n-(k-1)]}{k!}a^{n-k}b^k + \dots + b^n$
+	\item $(1+x)^n = 1 + nx + \nfrac{n(n-1)}{2!} x^2 + \dotsb $\\
+		$\hspace*{2em} + \nfrac{n(n-1)\dotsm[n-(k-1)]}{k!} x^k + \dotsb$.
+	\item 二项式系数表\\\nobreak
+		\epsfig{file= fig/15binomial.ps,scale=0.8}
+\end{compactenum}
+\subsubsection{多项式公式}
+\qquad $(a+b+c+d+ \dots +l)^n$ 展开式中的通项为：
+\[\nfrac{n!}{p!\, q!\, r!\dotsm s!} a^p b^q c^r \!\dotsm l^s ,\]
+\par
+其中：\hfil $p+q+r+ \dots +s = m$.\hfil\hfill
+\section{初等几何}
+\subsection{任意三角形}
+\subsubsection{面积}
+\setts \hspace*{0.3\textwidth} & $\Delta = \nfrac{1}{2} bh$, \ok\par
+\usets & $\Delta = \nfrac{1}{2} ab \sin C$, \ok\par
+\usets & $\Delta = \sqrt{s (s-a) (s-b) (s-c)}$, \ok\par
+\begin{wrapfigure}{r}{0.55\textwidth}
+	\epsfig{file= fig/16triangle.ps, scale=0.8}
+\end{wrapfigure}
+其中\qquad\quad \mbox{$s = \nfrac{1}{2} (a+b+c)$, }\par
+\qquad\mbox{$ \Delta = \nfrac{c^2 \sin A \sin B}{2\sin(A+B)} $.}
+\subsubsection{外圆半径}
+\setts \hspace*{4em} &$ R = \nfrac{abc}{4\Delta} $.\ok
+\subsubsection{内圆半径}
+\usets & $r = \nfrac{\Delta}{s}$.\ok\par
+其中\hfil $s = \nfrac{1}{2} (a+b+c)$. 
+\WFclear
+\subsection[四边形面积（$S$）]{四边形面积（$S$）}
+\subsubsection{矩形}
+\vskip -1em\hspace*{6em} $S=ab$.\hfil 
+$\vcenter{\epsfig{file= fig/16square.ps, scale=0.8}}$
+\subsubsection{平行四边形}
+\vskip -1em
+\begin{minipage}{0.35\textwidth}
+	\begin{compactenum}[\indent ~1)]
+	\item $S=bh$,
+		\vspace*{1em}
+	\item $S = ab \sin \phi$.
+	\end{compactenum}
+\end{minipage}
+$\vcenter{\epsfig{file= fig/16paral.ps, scale=0.8}}$
+\subsubsection{菱形}
+\vskip -0.5em
+\begin{minipage}{0.4\textwidth}
+	\lineskip=2ex
+	\begin{compactenum}[\indent ~1)]
+		\item $S=ah$.
+		\item $S= a^2 \sin\phi$.
+		\item $S= \nfrac{d_1 d_2}{2}$.
+	\end{compactenum}
+\end{minipage}
+$\vcenter{\epsfig{file= fig/17diamond.ps, scale=0.8}}$
+\subsubsection{梯形}
+\vskip -1em
+\begin{minipage}{0.35\textwidth}
+	\lineskip=2ex
+	\begin{align*}
+		\qquad S &= \nfrac{a_1+a_2}{2} h\\ &= 中线 \times 高
+	\end{align*}
+\end{minipage}
+$\vcenter{\epsfig{file= fig/17trapezoid.ps, scale=0.8}}$
+\subsubsection{任意四边形}
+\begin{wrapfigure}{r}{0.45\textwidth}
+	\epsfig{file= fig/17tetragon.ps, scale=0.8}
+\end{wrapfigure}
+\begingroup
+\lineskip=2ex
+~1) \qquad$S = \nfrac{1}{2} d_1 d_2 \sin\phi$.\par
+~2) \qquad$S^2 = {(s-a)}$\\\hspace*{4em}${(s-b)}{(s-c)}{(s-d)}$\\\hspace*{4em}$-abcd\cos^2 \alpha$.\\
+			\setts \quad 其中：& $a$, $b$, $c$, $d$ 是四边的长，\endl
+			\usets & $s = \nfrac{1}{2} (a+b+c+d)$，\endl
+			\usets & $\alpha$ 是两个对角之和之半。\ok\par
+\begin{wrapfigure}{r}{0.35\textwidth}
+	\vskip -5em
+	\epsfig{file= fig/18tetraincircle.ps, scale=0.8}
+\end{wrapfigure}
+~3) 圆内接四边形\\ \quad$S = \sqrt{(s-a)(s-b)(s-c)(s-d)}$.\par~\par~\par
+其中：\qquad $s = \nfrac{1}{2} (a+b+c+d)$.
+\endgroup
+\WFclear
+\vskip 2em plus 1em
+\subsection{正多边形}
+\begin{wrapfigure}{r}{0.4\textwidth}
+	\vskip -3em
+	\epsfig{file= fig/18polygon.ps, scale=0.8}
+\end{wrapfigure}
+\noindent \setts \quad 设\quad & $a= 正多边形边长$,\endl
+\usets & $R= 外接圆半径$,\endl
+\usets & $r= 内切圆半径$,\endl
+\usets & $2s= 多边形周长$,\endl
+\usets & $\alpha= 圆内角 \left( \alpha= \nfrac{360\degrees}{n} \right)$,\endl
+\usets & $S= 多边形的面积$。\ok
+\WFclear
+\subsubsection{正三角形（等边三角形）}
+\begin{compactenum}[\indent ~1)]
+	\item \qquad $S = \nfrac{\sqrt{3}}{4} a^2 = \nfrac{3}{4}\sqrt{3}\, R^2 = 3\sqrt{3}\, r^2 $.
+	\item \setts \qquad\qquad\qquad\quad & $a = \sqrt{3}\, R$. \ok
+	\item \usets & $r= \nfrac{\sqrt{3}}{6} R$.\ok
+	\item \usets & $L= \nfrac{a}{\sqrt{3}}$.\ok
+\end{compactenum}
+\subsubsection{正方形}
+\begin{inparaenum}[1)]
+	\noindent \setts \indent ~& \item $S = a^2 = 2R^2 = 4r^2$. \qquad & \item $a = \sqrt{2}\, R$.\endl
+	\usets & \item $r = \nfrac{1}{2} a$. & \item $R = \nfrac{a}{\sqrt{2}}$.\ok
+\end{inparaenum}
+\subsubsection{正五边形}
+\begin{compactenum}[\indent ~1)]
+	\item \setts \qquad\qquad\quad $S$ & $= \nfrac{a^2}{4} \sqrt{25 + 10\sqrt{5}}$.\ok
+	\item \usets \hfill $a$ & $= \nfrac{1}{2}R \sqrt{10-2\sqrt{5}}$.\ok
+	\item \usets \hfill $r$ & $= \nfrac{1}{2} a \sqrt{\nfrac{5+ 2\sqrt{5}}{5}}$.\ok
+	\item \usets \hfill $R$ & $= \nfrac{1}{2} a \sqrt{\nfrac{10+ 2\sqrt{5}}{5}}$.\ok
+\end{compactenum}
+\subsubsection{正六边形}
+\begin{inparaenum}[1)]
+	\noindent \setts \indent ~& \item $S= \nfrac{3}{2}\sqrt{3}\, a^2 = \nfrac{3}{2}\sqrt{3}\, R^2$. \qquad &
+		\item $a = R$. \endl
+	\usets & \item  $r = \nfrac{\sqrt{3}}{2} a$. & \item $R=a$.\ok
+\end{inparaenum}
+\subsubsection{正\ $n$ 边形}
+\begin{compactenum}[\indent ~1)]
+	\item $S = \nfrac{1}{2} n R^2 \sin \alpha = nr^2 \tg \nfrac{\alpha}{2}$.
+	\item $a = 2R\sin \nfrac{\alpha}{2} = 2r \tg \nfrac{\alpha}{2}$.
+	\item $R = \nfrac{a}{2 \sin \nfrac{\pi}{n}}$.
+\end{compactenum}
+\subsection{圆}
+\noindent \qquad 设\ $R=半径$，$D=直径$，则：
+\subsubsection{圆周长}
+\centerline{$C = \pi D = 2\pi R$.}
+\subsubsection{含\ $\theta$ 的弧长}
+\centerline{$l = R\theta$，（$\theta$ 以弪计）}
+\subsubsection{圆面积}
+\centerline{$S = \pi R^2 = \nfrac{1}{4}\pi D^2$.}
+\subsubsection{扇形面积}
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\vskip -7em
+	\epsfig{file= fig/20sector.ps, scale=0.8}
+\end{wrapfigure}
+\centerline{$A = \nfrac{1}{2} Rl = \nfrac{1}{2} R^2 \theta$.\hss}
+\subsubsection{弓形}
+\parpic[r]{ \epsfig{file= fig/20lune.ps, scale=0.8}}
+\begin{compactenum}[\indent ~1)]
+	\item \setts 弦长 \quad\qquad & $b = 2R\sin \nfrac{\theta}{2}$.\ok
+	\item \usets 圆半径 & $R = \nfrac{b^2 + 4h^2}{8h}$.\ok
+	\item \usets 圆心角 & $\tg \nfrac{\theta}{4} = \nfrac{2h}{b}$.\ok
+	\item \usets 弓形高 & $h = 2R \sin^2 \nfrac{\theta}{4} = \nfrac{1}{2} b \tg \nfrac{\theta}{4}$. \ok
+	\item \usets 弓形面积 & $A' = \nfrac{1}{2} R^2 \theta - \nfrac{1}{2} b \sqrt{R^2 - \left( \nfrac{b}{2}
+		\right)^{\!2}}$. \ok
+\end{compactenum}
+\WFclear
+\subsubsection{环形面积}
+\begingroup
+\lineskip=1em plus 1em
+\settskill 其中 \quad & $\overline{R} = \nfrac{1}{2} (R+r)$ 即平均半径，\ok
+\noindent\usets & $S = \pi (R^2 - r^2) = \pi (R+r)$\ok
+\begin{wrapfigure}{r}{0.45\textwidth}
+	\vskip -6em
+	\epsfig{file= fig/21ring.ps, scale=0.8}
+\end{wrapfigure}
+\usets & \quad $(R - r) = 2\pi \overline{R}m$. \ok\par
+\noindent\setts 其中 \quad & $\overline{R} = \nfrac{1}{2} (R+r)$ 即平均半径，\endl
+\usets & $m = R-r$ 即环形宽度。\ok
+\WFclear
+\endgroup
+\vskip 1em plus 6fil
+\subsection{旋转体}
+\subsubsection{圆柱}
+\noindent\indent  设\ $R=底半径$，$H=柱高$，则：\\
+\begin{inparaenum}[~1)]
+	\noindent \setts \indent & \item $侧面积 = 2\pi RH$. \qquad & \item $全面积 = 2\pi R(H+R)$. \endl
+	\usets & \item $体积 = \pi R^2 H$.\ok
+\end{inparaenum}
+\subsubsection{圆锥}
+\centerline{$( l = \sqrt{R^2 + H^2})$}
+\begin{wrapfigure}{r}{0.3\textwidth}
+	\vskip -7em
+	\epsfig{file= fig/21cone.ps, scale=0.8}
+\end{wrapfigure}
+\begin{inparaenum}[~1)]
+	\item $ 侧面积 = \pi R l $.\par
+	\item $ 全面积 = \pi R (l+R)$.\par
+	\item $ 体积 = \nfrac{1}{3} \pi R^2 H$.\par
+\end{inparaenum}
+\break
+\subsubsection{圆台}
+\centerline{$( l = \sqrt{H^2 + (R_1 - R_2)^2})$}
+\begin{wrapfigure}{r}{0.35\textwidth}
+	\vskip -5em
+	\epsfig{file= fig/22frustumcone.ps, scale=0.8}
+\end{wrapfigure}
+\begin{inparaenum}[~1)]
+	\item $ 侧面积 = \pi (R_1 + R_2) l $.\par
+	\item $ 全面积 = \pi R_1 (l + R_1) + R_2 \pi (l+R_2)$.\par
+	\item $ 体积 = \nfrac{1}{3} \pi H (R_1^2 + R_2^2 + R_1 R_2) $.\par
+\end{inparaenum}
+\subsubsection{球}
+ 设\quad $R=半径$，$D=直径$，则：
+\begin{asparaenum}[\indent ~1)]
+	\item $全面积 = 4 \pi R^2 = \pi D^2$.
+	\item $体积 = \nfrac{4}{3} \pi R^3 = \nfrac{1}{6} \pi D^3$.
+\end{asparaenum}
+\WFclear
+\subsubsection[球缺（或球冠）]{球缺\CJKfamily{song}（或球冠）}
+球被一个平面所截而得到的部分叫球缺。
+\[
+\epsfig{file= fig/22frustumball.ps, scale=0.8}
+\]
+\begin{asparaenum}[\indent ~1)]
+	\item $面积 = 2\pi R h$（不包括底面）。
+	\item $体积 = \nfrac{1}{6} \pi h (3r^2 + h^2) = \pi h^2 \left( R - \nfrac{h}{3} \right)$.
+\end{asparaenum}
+\subsubsection{球台}
+球被两平行平面所截，它们中间所夹的部分叫球台。
+\[
+\epsfig{file= fig/23frustum2ball.ps, scale=0.8}
+\]
+\begin{asparaenum}[\indent ~1)]
+	\item $侧面积 = 2 \pi R h$,
+	\item $全面积 = \pi (2 R h + r_1^2 + r_2^2)$,
+	\item $体积 = \nfrac{1}{6} \pi h \left[ 3(r_1^2 + r_2^2) + h^2 \right]$.
+\end{asparaenum}
+\subsection{棱柱及棱锥}
+设\quad $S= 底面积$，$H$ 表高，则：
+\subsubsection{棱柱体积}
+\centerline{$V = SH.$}
+\subsubsection{棱锥体积}
+\centerline{$V = \nfrac{1}{3} SH$.}
+\subsubsection{正棱锥侧面积}
+\centerline{$A = \nfrac{1}{2} \times 斜高 \times 底周长$.}
+\subsubsection{棱台}
+设\ $s_1$ 与\ $s_2$ 表上下底的面积，则：
+\begin{asparaenum}[\indent ~1)]
+	\item  棱台体积\par
+		\centerline{$V = \nfrac{1}{3} H (s_1 + s_2 + \sqrt{s_1 s_2})$.}
+	\item  正棱台侧面积\par
+		\centerline{$A = \nfrac{1}{2} (上底周长+ 下底周长)\times 斜高$。}
+\end{asparaenum}
+\section{平面三角}
+\subsection{弪与度的关系}
+\begin{compactenum}[\indent ~1)]
+	\item[] $\nfrac{\theta}{\pi} = \nfrac{D}{180}$. \qquad\quad（$D$ 与\ $\theta$ 表同一角的度数与弪数）
+	\item $180\degrees = \pi \,弪 = 3.1415926535 \,弪$。\\
+		$1\degrees = 0.01745329 \,弪$。\\
+		$1' = 0.0002909\, 弪$。\\
+		$1'' = 0.00000485 \, 弪$。
+	\item $1 \, 弪 = \nfrac{180\degrees}{\pi} = 57.2958\cdots\degrees \doteq 57\degrees 17' 44.8''$
+\end{compactenum}
+\subsection{三角函数}
+\subsubsection{定义}
+\[
+\epsfig{file= fig/25triangle.ps, scale=0.8}
+\]
+\vfill
+\[
+\epsfig{file= fig/25triangle2.ps, scale=0.8}
+\]
+\hbox to \textwidth{\quad\epsfig{file= fig/26triangle3.ps, scale=0.8}}\\[-1em plus 1fil]
+\hbox to \textwidth{\hfill\epsfig{file= fig/26triangle4.ps, scale=0.8}\quad}\\[-1em plus 1fil]
+\hbox to \textwidth{\quad\epsfig{file= fig/26triangle5.ps, scale=0.8}}
+\begin{compactenum}[\indent ~1)]
+	\advance\lineskip by 0pt plus 1fil
+	\item $\sin \alpha = \nfrac{对}{斜} = \nfrac{y}{r}$.
+	\item $\cos\alpha = \nfrac{邻}{斜} = \nfrac{x}{r}$.
+	\item $\phantom{i}\tg \alpha = \nfrac{对}{邻} = \nfrac{y}{x}$.
+	\item $\ctg\alpha = \nfrac{邻}{对} = \nfrac{x}{y}$.
+	\item $\sec\alpha = \nfrac{斜}{邻} = \nfrac{r}{x}$.
+	\item $\csc\alpha = \nfrac{斜}{对} = \nfrac{r}{y}$.
+\end{compactenum}
+\subsubsection{基本关系}
+\begin{compactenum}[\indent ~1)]
+	\advance\lineskip by 0pt plus 1fil
+	\item $\sin\alpha \cdot \csc\alpha = 1$.
+	\item $\cos\alpha \cdot \sec\alpha = 1$.
+	\item $\tg\alpha \cdot \ctg\alpha = 1$.
+	\item $\sin^2\alpha + \cos^2\alpha = 1$.
+	\item $\sec^2\alpha - \tg^2\alpha = 1$.
+	\item $\csc^2\alpha - \ctg^2\alpha = 1$.
+	\item $\tg\alpha = \nfrac{\sin\alpha}{\cos\alpha}$.
+	\item $\ctg\alpha = \nfrac{\cos\alpha}{\sin\alpha}$.
+\end{compactenum}
+\subsubsection*{\textls附\textrs\  基本关系记忆法}
+把六个函数按次序写在正六边形的角项上（如下图），把\ 1 写在中央。\nobreak
+\begin{center}
+\epsfig{file= fig/28relations.ps, scale=0.9}
+\end{center}
+\begin{asparaenum}[\indent ~1)]
+	\item 对角线两端二函数的乘积为\ 1（倒数关系）	
+	\item 周界上任一函数等于它相邻二函数的乘积（乘积关系）\\
+		\setts \qquad 例如： & $\sin x$ 的左右邻为\endl
+		\usets & \quad $\tg x$ 与\ $\cos x$，而\ $\sin x = \tg x \cos x$；\endl
+		\usets & $\tg x$ 的左右邻为\endl
+		\usets & \quad $\sin x $ 与\ $\sec x$，而\ $\tg x = \sin x \sec x$，等等。\ok\par
+		\noindent \usets \qquad \textls\CJKfamily{hei}注\textrs & 乘积关系也包括了分式关系。从上例可看出\endl
+		\centerline{$\tg x = \nfrac{\sin x}{\cos x}$.}
+	\item 在有阴影的三角形里，两个上角顶的平方和等于下角顶的平方（平方关系）\\
+		\setts \qquad 例如： & $\sin x$ 与\ $\cos x$ 在上角顶上，1 在下角顶上，而\endl
+		\centerline{$\sin^2 x + \cos^2 x = 1^2$;}
+		\usets & $\tg x$ 与\ 1 在上角顶上，$\sec x$ 在下角顶上，而\endl
+		\centerline{$\tg^2 x + 1^2 = \sec^2 x$;}
+		\usets & $\ctg x$ 与\ 1 在上角顶上，$\csc x$ 在下角顶上，而\endl
+		\centerline{$\ctg^2 x + 1^2 = \csc^2 x$.}
+\end{asparaenum}
+\subsubsection{三角函数在各象限的正负}
+\makeatletter
+\newlength{\tmplen}
+\setlength{\tmplen}{\textwidth-21em}
+\noindent
+\begin{headtable}{3ex}{1.8ex}{\tmplen}{6}{3.5em}
+	\toprule
+	\multicolumn{1}{c|}{\tabheadbackslash{\the\tmplen}{4ex}{2.8ex}{\vbox{\vskip 2ex\noindent象\@normalcr\hspace*{2em}限}}
+	{\hbox to 3em{\vbox{\noindent函\@normalcr\hspace*{2em}数\vspace*{2ex}}}}} & 
+		$\sin\alpha$ & $\cos\alpha$ & $\tg\alpha$ & $\ctg\alpha$ & $\sec\alpha$ & $\csc\alpha$\\
+	\midrule\midrule
+	I	& $+$ & $+$ & $+$ & $+$ & $+$ & $+$\\\midrule
+	II	& $+$ & $-$ & $-$ & $-$ & $-$ & $+$\\\midrule
+	III	& $-$ & $-$ & $+$ & $+$ & $-$ & $-$\\\midrule
+	IV	& $-$ & $+$ & $-$ & $-$ & $+$ & $-$\\
+	\bottomrule
+\end{headtable}
+\makeatother
+\subsubsection*{\textls附\textrs\  三角函数的正值区域}
+\[
+\epsfig{file= fig/29region.ps, scale=0.8}
+\]
+\subsection{任意角的三角函数}
+设\ $A = (k\times 90\degrees \pm \alpha)$，则\ $A$ 的三角函数与\ $\alpha$ 的三角函数的关系，按照下列两条规则决定：
+\begin{asparaenum}[\indent (1)]
+	\item $函数的绝对值= 
+		\begin{cases}
+			\alpha\,的同名函数(若\,k=偶数),\\[1em]
+			\alpha\,的互余函数(若\,k=奇数).
+		\end{cases}$
+	\item $函数的正负号 = A\,角所在象限内原三角函数的符号$（参考上节）。
+\end{asparaenum}
+\par\ens{注} $(-\alpha)$ 的三角函数与\ $360\degrees -\alpha$ 的三角函数相同。
+\vskip 1em minus 1em
+\subsection{特殊角的三角函数值}
+\noindent
+\begin{tabularx}{\textwidth}{>{\vstrut{4ex}{2.8ex}\hfil}X*{6}{|>{\hfil}X}}
+	\toprule
+	$\alpha$ & $\sin\alpha$ & $\cos\alpha$ & $\tg\alpha$ & $\ctg\alpha$ & $\sec\alpha$ & $\csc\alpha$\\
+	\midrule\midrule
+	0 & 0 & 1 & 0 & $\infty$ & 1 & $\infty$ \\\midrule
+	$\nfrac{\pi}{6}$ & $\nfrac{1}{2}$ & $\nfrac{\sqrt{3}}{2}$ & $\nfrac{\sqrt{3}}{3}$ & $\sqrt{3}$ & 
+	$\nfrac{2}{3}\sqrt{3}$ & 2\\\midrule
+	$\nfrac{\pi}{4}$ & $\nfrac{\sqrt{2}}{2}$ & $\nfrac{\sqrt{2}}{2}$ & 1 & 1 & $\sqrt{2}$ & $\sqrt{2}$ \\\midrule
+	$\nfrac{\pi}{3}$ & $\nfrac{\sqrt{3}}{2}$ & $\nfrac{1}{2}$ & $\sqrt{3}$ & $\nfrac{\sqrt{3}}{3}$ & 2 &
+	$\nfrac{2}{3}\sqrt{3}$\\\bottomrule
+\end{tabularx}
+\par\noindent
+\begin{tabularx}{\textwidth}{>{\vstrut{4ex}{2.8ex}\hfil}X*{6}{|>{\hfil}X}}
+	\toprule
+	$\alpha$ & $\sin\alpha$ & $\cos\alpha$ & $\tg\alpha$ & $\ctg\alpha$ & $\sec\alpha$ & $\csc\alpha$\\
+	\midrule\midrule
+	0 & 0 & 1 & 0 & $\infty$ & 1 & $\infty$ \\\midrule
+	$\nfrac{\pi}{2}$ & 1 & 0 & $\infty$ & 0 & $\infty$ & 1\\\midrule
+	$\pi$ & 0 & $-1$ & 0 & $\infty$ & $-1$ & $\infty$\\\midrule
+	$\nfrac{3}{2}\pi$ & $-1$ & 0 & $\infty$ & 0 & $\infty$ & $-1$\\\midrule
+	$2\pi$ & 0 & 1 & 0 & $\infty$ & 1 & $\infty$\\\bottomrule
+\end{tabularx}
+\smallskip\par
+\ens{附} 30\degrees，45\degrees，60\degrees\ 的函数值的记忆法：
+\begin{center}
+\epsfig{file= fig/31trigo.ps, scale=0.8}
+\end{center}
+\subsection{三角函数的图形}
+\begin{asparaenum}[(1)]
+	\item \indent $y = \sin x$\par\allowbreak
+		\[ \epsfig{file= fig/32sinx.ps, scale=0.8} \]
+	\item $y = \cos x$
+		\[ \epsfig{file= fig/32cosx.ps, scale=0.8} \]
+	\item $y = \tg x$
+		\[ \epsfig{file= fig/32tgx.ps, scale=0.8} \]
+	\item $y = \ctg x$
+		\[ \epsfig{file= fig/33ctgx.ps, scale=0.8} \]
+	\item $y = \sec x$
+		\[ \epsfig{file= fig/33secx.ps, scale=0.8} \]
+	\item $y = \csc x$
+		\[ \epsfig{file= fig/34cscx.ps, scale=0.8} \]
+\end{asparaenum}
+\subsection{两角和的三角函数}
+\begin{compactenum}[\indent (1)]
+	\item $\sin(\alpha\pm \beta) = \sin\alpha\cos\beta \pm \cos\alpha\sin\beta$.	
+	\item $\cos(\alpha\pm \beta) = \cos\alpha\cos\beta \mp \sin\alpha\sin\beta$.	
+	\item $\tg(\alpha \pm \beta) = \nfrac{\tg\alpha \pm \tg\beta}{1 \mp \tg\alpha \tg\beta}$.	
+	\item $\ctg(\alpha\pm \beta) = \nfrac{\ctg\alpha \ctg\beta \mp 1}{\ctg\beta \pm \ctg\alpha}$.	
+\end{compactenum}
+\subsection{倍角的三角函数}
+\begin{compactenum}[\indent (1)]
+	\item $\sin 2\alpha = 2 \sin\alpha \cos\alpha$.	
+	\item $\cos 2\alpha = \cos^2\alpha - \sin^2\alpha = 1-2 \sin^2\alpha = 2\cos^2\alpha - 1$.	
+	\item $\tg 2\alpha = \nfrac{2\tg\alpha}{1 - \tg^2\alpha}$.
+	\item $\ctg2\alpha = \nfrac{\ctg^2\alpha - 1}{2 \ctg\alpha}$.
+	\item $\sin^2\alpha = \nfrac{1}{2} (1 - \cos2\alpha)$.
+	\item $\cos^2\alpha = \nfrac{1}{2} (1 + \cos2\alpha)$.
+	\item $\sin3\alpha = 3 \sin\alpha - 4\sin^3\alpha$,\\
+		或\qquad $4\sin^3\alpha - 3\sin\alpha + \sin3\alpha = 0$.
+	\item $\cos3\alpha = 4\cos^3\alpha - 3\cos\alpha$,\\
+		或\qquad $4\cos^3\alpha - 3\cos\alpha - \cos3\alpha = 0$.
+	\item $\sin n\alpha = n \cos^{n-1}\alpha \sin\alpha$\\
+		$-\nfrac{n(n-1)(n-2)}{3!}\cos^{n-3}\alpha \sin^3\alpha$\\
+		$+\nfrac{n(n-1)(n-2)(n-3)(n-4)}{5!} \cos^{n-5}\alpha \sin^5\alpha + \dotsb$
+	\item $\cos n\alpha = \cos^n\alpha - \nfrac{n(n-1)}{2!}\cos^{n-2}\alpha \sin^2\alpha$\\
+		$+\nfrac{n(n-1)(n-2)(n-3)}{4!} \cos^{n-4}\alpha \sin^4\alpha + \dotsb$
+\end{compactenum}
+\subsection{半角的三角函数}
+\begin{compactenum}[\indent (1)]
+	\item $\sin\nfrac{\alpha}{2} = \pm\sqrt{\nfrac{1-\cos\alpha}{2}}$.	
+		\pagebreak
+	\item $\cos\nfrac{\alpha}{2} = \pm\sqrt{\nfrac{1+\cos\alpha}{2}}$.	
+	\item $\tg \nfrac{\alpha}{2} = \pm\sqrt{\nfrac{1-\cos\alpha}{1+\cos\alpha}} = \nfrac{1-\cos\alpha}{\sin\alpha}
+		= \nfrac{\sin\alpha}{1+\cos\alpha}$.
+	\item $\ctg\nfrac{\alpha}{2} = \pm\sqrt{\nfrac{1+\cos\alpha}{1-\cos\alpha}} = \nfrac{\sin\alpha}{1-\cos\alpha}
+		= \nfrac{1+\cos\alpha}{\sin\alpha}$.
+\end{compactenum}
+\vskip 1em
+\subsection{三角函数的和差与积的关系}
+\begin{compactenum}[\indent (1)]
+	\item $2 \sin\alpha \cos\beta = \sin(\alpha+\beta) + \sin(\alpha-\beta)$.	
+	\item $2 \cos\alpha \sin\beta = \sin(\alpha+\beta) - \sin(\alpha-\beta)$.	
+	\item $2 \cos\alpha \cos\beta = \cos(\alpha+\beta) + \cos(\alpha-\beta)$.	
+	\item $-2\sin\alpha \sin\beta = \cos(\alpha+\beta) - \cos(\alpha-\beta)$.	
+	\item $\sin\alpha + \sin\beta = 2 \sin\nfrac{\alpha+\beta}{2} \cos\nfrac{\alpha-\beta}{2}$.	
+	\item $\sin\alpha - \sin\beta = 2 \cos\nfrac{\alpha+\beta}{2} \sin\nfrac{\alpha-\beta}{2}$.	
+	\item $\cos\alpha + \cos\beta = 2 \cos\nfrac{\alpha+\beta}{2} \cos\nfrac{\alpha-\beta}{2}$.	
+	\item $\cos\alpha - \cos\beta =-2 \sin\nfrac{\alpha+\beta}{2} \sin\nfrac{\alpha-\beta}{2}$.	
+\end{compactenum}
+\subsection{三角补充公式}
+\begin{asparaenum}[\indent (1)]
+	\advance\lineskip by 1pt
+	\item $\sin(\alpha + \beta) \sin(\alpha - \beta) = \sin^2\alpha - \sin^2\beta$.	
+	\item $\cos(\alpha + \beta) \cos(\alpha - \beta) = \cos^2\alpha - \sin^2\beta$.
+	\item $(\sin\alpha + \cos\alpha)^2 = 1 + \sin2\alpha$.
+	\item $(\sin\alpha - \cos\alpha)^2 = 1 - \sin2\alpha$.	
+	\item $\nfrac{\sin\alpha - \sin\beta}{\sin\alpha + \sin\beta} = \nfrac{\tg\nfrac{1}{2}(\alpha - \beta)}{\tg
+		\nfrac{1}{2}(\alpha + \beta)}$.	
+	\item $\nfrac{\sin\alpha + \sin\beta}{\cos\alpha + \cos\beta} = \nfrac{\sin\nfrac{1}{2}(\alpha + \beta)}{\cos
+		\nfrac{1}{2}(\alpha + \beta)}$.	
+	\item $\nfrac{\tg\beta}{\tg\alpha} = \nfrac{\sin(\alpha+\beta) - \sin(\alpha-\beta)}{\sin(\alpha+\beta) + \sin
+		(\alpha - \beta)}$.
+		\smallskip\par 
+		\hskip 2.5em 以下公式常用于三角级数求和 
+		\smallskip\par
+	\item $\csc\alpha = \ctg\nfrac{\alpha}{2} - \ctg\alpha$.	
+	\item $2\sin\alpha\sin\nfrac{\beta}{2} = \cos\!\left(\! \alpha - \nfrac{\beta}{2} \right)\! - \cos\!\left(\!
+		\alpha + \nfrac{\beta}{2} \right)$.	
+	\item $2\cos\alpha\sin\nfrac{\beta}{2} = \sin\!\left(\! \alpha + \nfrac{\beta}{2} \right)\! - \sin\!\left(\!
+		\alpha - \nfrac{\beta}{2} \right)$.	
+	\item $\ctg\alpha - 2\ctg2\alpha = \tg\alpha$.	
+	\item $\tg2\alpha - \tg\alpha = \sin\alpha \cdot \sec\alpha \cdot \sec2\alpha$.	
+	\item $\ctg\alpha - \ctg3\alpha = \sin2\alpha \cdot \csc\alpha \cdot \csc3\alpha$.
+	\item $\tg\alpha - \tg\nfrac{\alpha}{2} = \tg\nfrac{\alpha}{2} \cdot \sec\alpha$.	
+	\item $\csc\alpha - \csc3\alpha = 2\cos2\alpha \cdot \csc3\alpha$.	
+	\item $\tg3\alpha - \tg\alpha = 2\sin\alpha \cdot \sec3\alpha$.	
+	\item $\nfrac{1}{2}\tg\nfrac{\alpha}{2} = \nfrac{1}{2} \ctg\nfrac{\alpha}{2} - \ctg\alpha$.	
+	\item $\nfrac{1}{\cos\alpha + \cos3\alpha} = \nfrac{1}{2}\sec\alpha \cdot \sec2\alpha$.	
+	\item $\sin^2\alpha \cdot \sin2\alpha = \nfrac{1}{2}\sin2\alpha - \nfrac{1}{4}\sin4\alpha$.
+	\item $2\sin2\alpha \cdot \sin\alpha = \cos\alpha - \cos3\alpha$.	
+\end{asparaenum}
+\subsection{边角关系}
+\subsubsection{正弦定理}
+\begin{wrapfigure}{r}{0.55\textwidth}
+	\vskip -5em
+	\epsfig{file= fig/38triangle.ps, scale=0.8}
+\end{wrapfigure}
+\mbox{$\nfrac{a}{\sin A} = \nfrac{b}{\sin B} = \nfrac{c}{\sin C} = 2R$.}\par\medskip
+其中，$R$ 为外圆半径。
+\subsubsection{余弦定理}
+\WFclear
+\[ a^2 = b^2 + c^2 - 2bc \cos A. \]
+\[ b^2 = c^2 + a^2 - 2ca \cos B. \]
+\[ c^2 = a^2 + b^2 - 2ab \cos C. \]
+\subsubsection{正切定理}
+\[ \tg\nfrac{A - B}{2} = \nfrac{a-b}{a+b} \ctg\nfrac{C}{2} \quad\mbox{或}\quad 
+\nfrac{a-b}{a+b} = \nfrac{\tg\nfrac{A-B}{2}}{\tg\nfrac{A+B}{2}}. \]
+\subsection{半角公式}
+\begin{compactenum}[\hspace*{1em} (1)]
+	\item $\sin\nfrac{A}{2} = \sqrt{ \nfrac{(s-b)(s-c)}{bc}}$.\\
+		$\sin\nfrac{B}{2} = \sqrt{\nfrac{(s-c)(s-a)}{ca}}$.\\
+		$\sin\nfrac{C}{2} = \sqrt{\nfrac{(s-a)(s-b)}{ab}}$.
+	\item 	$\cos\nfrac{A}{2} = \sqrt{\nfrac{s(s-a)}{bc}}$.\\
+		$\cos\nfrac{B}{2} = \sqrt{\nfrac{s(s-b)}{ca}}$.\\
+		$\cos\nfrac{C}{2} = \sqrt{\nfrac{s(s-c)}{ab}}$.
+	\item 	$\tg\nfrac{A}{2} = \nfrac{1}{s-a} \sqrt{\nfrac{(s-a)(s-b)(s-c)}{s}}$，或\ $\tg\nfrac{A}{2} =
+		\nfrac{r}{s-a}$;\\
+		$\tg\nfrac{B}{2} = \nfrac{1}{s-b} \sqrt{\nfrac{(s-a)(s-b)(s-c)}{s}}$，或\ $\tg\nfrac{A}{2} =
+		\nfrac{r}{s-b}$;\\
+		$\tg\nfrac{C}{2} = \nfrac{1}{s-c} \sqrt{\nfrac{(s-a)(s-b)(s-c)}{s}}$，或\ $\tg\nfrac{A}{2} =
+		\nfrac{r}{s-c}$;\\
+		\hspace*{-2em}其中，$r$ 是\ $\triangle ABC$ 的内切圆半径，它等于\\
+		\centerline{$\sqrt{\nfrac{(s-a)(s-b)(s-c)}{s}}$.\hfil}
+\end{compactenum}
+\subsection{反三角函数}
+\subsubsection{恒等式}
+\begin{compactenum}[\indent ~1)]
+	\item $\arcsin x \pm \arcsin y $\\ \hspace*{4em} $ = \arcsin [ x\sqrt{1-y^2} \pm y\sqrt{1-x^2}\, ]$.	
+	\item $\arccos x \pm \arccos y $\\ \hspace*{4em} $ = \arccos [ xy \mp \sqrt{(1-x^2)(1-y^2)} \,]$.	
+	\item $\arctg x \pm \arctg y = \arctg \left[ \nfrac{x\pm y}{1 \mp xy} \right]$.
+	\item $\arcsin x + \arccos x = \nfrac{\pi}{2}$.	
+	\item $\arctg x+ \arcctg x = \nfrac{\pi}{2}$.	
+\end{compactenum}
+\subsubsection{图形}
+\begin{inparaenum}[~1)]
+	\setts \hspace*{3em} & \item $y = \arcsin x$ \hspace*{3em} & \item $y = \arccos x$. \ok \par
+	\qquad\quad \epsfig{file= fig/40arcsinx.ps, scale=0.8} \quad\; \epsfig{file= fig/40arccosx.ps, scale=0.8} \par
+	\usets & \quad $-\nfrac{\pi}{2} \leqslant y \leqslant \nfrac{\pi}{2}$ & \qquad $0 \leqslant y \leqslant \pi$.\ok \par
+	\penalty -100
+	\usets & \item $y = \arctg x $ & \item $y = \arcctg x$\ok\par
+	\noindent\qquad\epsfig{file= fig/41arctgx.ps, scale=0.8}\epsfig{file= fig/41arcctg.ps, scale=0.8} \par
+	\usets & \quad $-\nfrac{\pi}{2} < y < \nfrac{\pi}{2}$ & \quad $0 < y < \pi$.\ok \par
+	\penalty -100
+	\usets & \item $y = \arcsec x $ & \item $y = \arccsc x$\ok\par
+	\noindent\qquad\epsfig{file= fig/41arcsecx.ps, scale=0.8}\epsfig{file= fig/41arccscx.ps, scale=0.8} \par
+	\usets 当\ $x>0$, $0\leqslant y<\nfrac{\pi}{2}$；&& \hspace*{-1.5em}当\ $x>0$, $0<y\leqslant\nfrac{\pi}{2}$；\ok\par
+	\usets 当\ $x<0$, $-\pi\leqslant y<-\nfrac{\pi}{2}$.&& \hspace*{-1.5em}当\ $x<0$, $-\pi<y\leqslant-\nfrac{\pi}{2}$.
+	\ok\par
+\end{inparaenum}
+\subsection{传动皮带的长}
+设\ $R$ 与\ $r$ 为两轮的半径，$\alpha$ 为两轮的中心的距离，$L$ 为皮带长度，则：
+
+\begin{landscape}
+	\section{测试}
+	$(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par
+	$(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par $(a+b)$\par
+	$(a+b)$\par $(a+b)$\par
+\end{landscape}
+\cleardoublepage
+\section{测试}
+%\stepcounter{subsection}
+%\subsectionmark{测试个头}
+%\addtocounter{subsection}{-1}
+\subsection{测试个头}
+\cleardoublepage
+\subsection{测试个头}
+\clearpage
+\end{CJK*}
+\end{document}

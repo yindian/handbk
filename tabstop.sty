@@ -1,0 +1,147 @@
+%%
+%%      tabstop.sty         coded by Dian Yin
+%%
+%%      These macros allow you to realize tabstop functionality without using the tabbing
+%%       environment, which is very useful when using tabstop in enumerate/itemize environment.
+%%
+%%	Example:
+%%           \begin{enumerate}
+%%             \item \setts In this case, & $x=3$\endl
+%%                   \usets & $y=4$ \endl
+%%                   \usets & $z=5$\ok
+%%             \item \setts In this case, & $x=4$\endl
+%%                   \usets & $y=5$ \endl
+%%                   \usets & $z=6$\ok
+%%           \end{enumerate}
+%%      Known bugs or special notes:
+%%       o. The \setts and \usets cannot be nested.
+%%       o. Do not use \setts or \usets in other tabbing environment. Not only because of the
+%%            duplicate function, but the \ifts@nested will expand before processing column.
+%%       o. When using ampersand(&) in \setts or \usets, put \catcode`\&=4 first and restore
+%%            it to \active after that.
+%%
+%%      History:
+%%            2006.3.15.                  Version 1.00.
+%%                                        \setts \usets \ok \cr
+%%                                        TODO: \setts xxxx \kill
+%%            2006.3.21.                  Version 1.01.
+%%                                        Fixed bug: \def\cr{\ok\\} => \def\endl{\ok\\}
+%%            2006.3.22.                  Added `Known bugs ..' in documentation.
+%%            2006.4.15.                  Fixed bug: added percent(%) after the close braces
+%%                                        in \setts and \usets in order to avoid spaces
+%%            2006.4.20.                  Added \settskill. Rearranged order.
+%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tabstop}[2006/3/15 v1.00 Tab Stop Macros without Environment]
+\makeatletter
+\newbox\ts@tmpbox
+\newdimen\ts@gtempa
+\chardef\ts@firsttab=\the\allocationnumber
+\newdimen\ts@gtempa\newdimen\ts@gtempa\newdimen\ts@gtempa\newdimen\ts@gtempa
+\newdimen\ts@gtempa\newdimen\ts@gtempa\newdimen\ts@gtempa\newdimen\ts@gtempa
+\newdimen\ts@gtempa\newdimen\ts@gtempa\newdimen\ts@gtempa\newdimen\ts@gtempa
+\chardef\ts@maxtab=\the\allocationnumber
+\newcount\ts@cur \newcount\ts@high
+\newif\ifts@nested
+\ts@nestedfalse
+{%
+	\catcode`\&=\active
+	\let&=0
+	\gdef\ts@letampsettab{\def&{\ts@savets@end\ts@savets@beg}}
+	\gdef\ts@letampsettabkill{\def&{\ts@savetskill@end\ts@savetskill@beg}}
+	\gdef\ts@letampusetab{\def&{\ts@usets@end\ts@usets@beg}}
+}
+
+%	savets
+\def\ts@savets@beg{%
+	\ifnum \ts@cur > \ts@maxtab
+		\PackageError{tabstop}{Tabstop overflow.}{No more tabstop can be set.}
+	\fi
+	\global\setbox\ts@tmpbox=\hbox\bgroup\ignorespaces
+}
+\def\ts@savets@end{%
+	\egroup
+	\global\dimen\ts@cur=\wd\ts@tmpbox
+	\leavevmode\box\ts@tmpbox
+	%\the\dimen\ts@cur	% for debug use
+	\global\advance\ts@cur by 1
+	\global\advance\ts@high by 1
+}
+\def\setts{%
+	\ifts@nested
+		\PackageError{tabstop}{Tabstop nested.}{\protect\setts\space cannot be nested.}
+	\fi
+	\global\ts@nestedtrue
+	\begingroup
+	\global\ts@cur=\ts@firsttab
+	\global\ts@high=\ts@firsttab
+	\catcode`\&=\active
+	\ts@letampsettab
+	\def\ok{%
+		\ts@savets@end
+		\endgroup
+		\global\ts@nestedfalse
+	}%
+	\def\endl{\ok\\}%
+	\ts@savets@beg
+}
+
+%	savetskill
+\let\ts@savetskill@beg\ts@savets@beg
+\def\ts@savetskill@end{%
+	\egroup
+	\global\dimen\ts@cur=\wd\ts@tmpbox
+	%\leavevmode\box\ts@tmpbox
+	%\the\dimen\ts@cur	% for debug use
+	\global\advance\ts@cur by 1
+	\global\advance\ts@high by 1
+}
+\def\settskill{%
+	\ifts@nested
+		\PackageError{tabstop}{Tabstop nested.}{\protect\setts\space cannot be nested.}
+	\fi
+	\global\ts@nestedtrue
+	\begingroup
+	\global\ts@cur=\ts@firsttab
+	\global\ts@high=\ts@firsttab
+	\catcode`\&=\active
+	\ts@letampsettabkill
+	\def\ok{%
+		\ts@savetskill@end
+		\endgroup
+		\global\ts@nestedfalse
+	}%
+	\def\endl{\ok\\}%
+	\ts@savetskill@beg
+}
+
+%	usets
+\def\ts@usets@beg{%
+	\ifnum \ts@cur > \ts@high
+		\PackageError{tabstop}{Tabstop overflow.}{No more tabstop can be added.}
+	\fi
+	\leavevmode\hbox to \dimen\ts@cur\bgroup\color@begingroup\ignorespaces
+}
+\def\ts@usets@end{%
+	\hss\color@endgroup\egroup
+	\global\advance\ts@cur by 1
+}
+\def\usets{%
+	\ifts@nested
+		\PackageError{tabstop}{Tabstop nested.}{\protect\setts\space cannot be nested.}
+	\fi
+	\global\ts@nestedtrue
+	\begingroup
+	\global\ts@cur=\ts@firsttab
+	\catcode`\&=\active
+	\ts@letampusetab
+	\def\ok{%
+		\ts@usets@end
+		\endgroup
+		\global\ts@nestedfalse
+	}%
+	\def\endl{\ok\\}%
+	\ts@usets@beg
+}
+\makeatother
+\endinput

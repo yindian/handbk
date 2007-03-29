@@ -1,0 +1,18 @@
+\input pstfig
+$
+\pnode(0,0){A}
+\pnode(6.5,0){C}
+\pnode(4.5,4){B}
+\pspolygon(A)(B)(C)
+\noneline
+\pcline(A)(B)
+\Aput{c}
+\pcline(B)(C)
+\Aput{a}
+\pcline(C)(A)
+\Aput{b}
+\uput[-140](A){A}
+\uput[-40](C){C}
+\uput[80](B){B}
+$
+\bye

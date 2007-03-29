@@ -1,0 +1,36 @@
+\input pstfig
+\qquad\qquad
+$
+\def\myR{4.06}
+\pnode(0,0){O}
+\pnode(\myR;  0){A}
+\pnode(\myR; 60){B}
+\pnode(\myR;120){C}
+\pnode(\myR;180){D}
+\pnode(\myR;240){E}
+\pnode(\myR;300){F}
+\pspolygon(A)(B)(C)(D)(E)(F)
+\psset{hatchangle=0,hatchwidth=0.4pt}
+\psline(A)(D)
+\psline(B)(E)
+\psline(C)(F)
+\noneline
+\pspolygon[fillstyle=hlines](B)(C)(O)
+\pspolygon[fillstyle=hlines](D)(E)(O)
+\pspolygon[fillstyle=hlines](F)(A)(O)
+\solidline
+\cnode[fillstyle=solid](0,0){0.6}{O}
+%\uput{0}[0](O){1}
+\font\bigtenit=cmti10 scaled 1440
+\rput(O){\hbox{\bigtenit 1}\,}
+\def\tg{\mathop{\rm tg}}
+\def\ctg{\mathop{\rm ctg}}
+\psset{labelsep=1ex}
+\Rput[l](A){\ctg x}
+\Rput[b](B){\cos x}
+\Rput[b](C){\sin x}
+\Rput[r](D){\tg x}
+\Rput[t](E){\sec x}
+\Rput[t](F){\csc x}
+$
+\bye

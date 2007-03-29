@@ -1,0 +1,30 @@
+\input pstfig
+$
+\setcoorunit{4}{1}
+\psset{xunit=0.4\psyunit}
+%\drawaxes{-2.6}{5}{-3}{3.2}
+\drawaxes{-3.5}{4}{-2.2}{2.3}
+\markxlabel{0}{\scriptstyle O}{1em}
+\uput[45](0,1){\pi}
+\uput[-171](0, 0.5){\nfrac{\pi}{2}}
+\uput[-9](0,-0.5){\!-\nfrac{\pi}{2}}
+\uput[-45](0,-1){-\pi}
+%\psset{showpoints=true}
+\psplot{ 1}{ 3}{asin(1/x)/\pinum   }
+\psplot{-3}{-1}{-asin(1/x)/\pinum-1}
+\thinline
+\psplot{ 1}{ 3}{asin(1/x)/\pinum   -2}
+\psplot{ 1}{ 3}{-asin(1/x)/\pinum  -1}
+\psplot{ 1}{ 3}{-asin(1/x)/\pinum  +1}
+\psplot{-3}{-1}{-asin(1/x)/\pinum-1+2}
+\psplot{-3}{-1}{asin(1/x)/\pinum   +2}
+\psplot{-3}{-1}{asin(1/x)/\pinum     }
+\dashline
+\psline(-3, 1)(3, 1)
+\psline(-3, 2)(3, 2)
+\psline(-3,-1)(3,-1)
+\psline(-3,-2)(3,-2)
+\psline(-1,-0.5)(0,-0.5)
+\psline( 0, 0.5)(1,0.5)
+$
+\bye

@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage{fp}
+\input pstfig
+\begin{document}
+\vspace*{3cm}
+$
+\def\myR{4}
+\def\mytheta{80}
+\def\myr{3.2}
+\FPeval\myrr{round(\myr * cos(\mytheta / 180 * \FPpi) : 6)}
+\FPeval\myl{root(2, \myR * \myR - \myr * \myr)}
+\FPeval\myH{round(\myl * sin(\mytheta / 180 * \FPpi) : 6)}
+\FPeval\myalpha{arcsin(\myl / (\myR * sin(\mytheta / 180 * \FPpi))) / \FPpi * 180}
+\FPeval\myangA{round(\myalpha : 6)}
+\FPeval\myangB{round( (180 -  \myalpha) : 6)}
+\FPeval\myangC{round( arccos( \myR * cos(\myalpha / 180 * \FPpi) / \myr ) / \FPpi * 180 : 6)}
+\FPeval\myangD{round( (180 -  \myangC) : 6)}
+\pnode(0,0){O}
+\pnode(\myR; \myangA){A}
+\pnode(\myR; \myangB){B}
+\pnode(\myR; 90){S}
+\pnode(0, \myH){P}
+\psellipticarc(P)(\myr, \myrr){\myangD}{\myangC}
+\psarc(O){\myR}{\myangA}{\myangB}
+\thinline\dashline
+\psarc(O){\myR}{\myangB}{\myangA}
+\psellipticarc(P)(\myr, \myrr){\myangC}{\myangD}
+\pcline(O)(S)
+\uput{0.5ex}[50](P){h}
+\pnode(\myr, \myH){C}
+\pcline(C)(P)
+\Aput{r}
+\pcline(O)(C)
+\psset{labelsep=0ex}
+\Bput{R}
+$
+\end{document}
+

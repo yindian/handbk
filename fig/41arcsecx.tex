@@ -1,0 +1,28 @@
+\input pstfig
+$
+\setcoorunit{4}{1}
+\psset{xunit=0.4\psyunit}
+%\drawaxes{-2.6}{5}{-3}{3.2}
+\drawaxes{-3.5}{4}{-1.9}{1.9}
+\markxlabel{0}{\scriptstyle O}{1em}
+\uput[-20](0,1){\pi}
+\uput[-9](0, 0.5){\nfrac{\pi}{2}}
+\uput[0](0,-0.73){\!-\nfrac{\pi}{2}}
+\uput[-20](0,-1){\!-\pi}
+%\psset{showpoints=true}
+\psplot{ 1}{ 3}{acos(1/x)/\pinum}
+\psplot{-3}{-1}{-acos(1/x)/\pinum}
+\thinline
+\psplot{ 1}{ 3}{-acos(1/x)/\pinum}
+\psplot{-3}{-1}{acos(1/x)/\pinum}
+\psplot{-3}{-1}{-acos(1/x)/\pinum+2}
+\psplot{-3}{-1}{acos(1/x)/\pinum-2}
+\dashline
+\psline(-3, 0.5)(3, 0.5)
+\psline(-3,-0.5)(3,-0.5)
+\psline(-3, 1.5)(3, 1.5)
+\psline(-3,-1.5)(3,-1.5)
+\psline(-1,-1.0)(0,-1.0)
+\psline(-1, 1.0)(0, 1.0)
+$
+\bye

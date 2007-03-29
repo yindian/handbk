@@ -1,0 +1,24 @@
+\input pstricks.tex
+\input pst-plot.tex
+\input pst-node.tex
+\nopagenumbers
+\vrule height 15em width 0pt
+$
+\psset{unit=1.3em,linewidth=0.4pt}
+%\everypsbox{\scriptstyle}
+\psaxes[labels=none,ticks=none]{->}(0,0)(-2,-1)(9.5,6.5)
+\psset{labelsep=0.5ex}
+\Rput[l](9.5,0){x}
+\Rput[l](0,6){y}
+\psset{linewidth=0.8pt}
+\pcline(0,0)(7,5)
+\Aput{r}
+\pcline(0,0)(7,0)
+\Bput{a}
+\pcline(7,0)(7,5)
+\Bput{b}
+\Rput[tr](0,0){O}
+\rput[bl](7,5){M(a+bi)}
+\uput{1}[18](0,0){\varphi}
+$
+\bye

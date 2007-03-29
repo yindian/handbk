@@ -1,0 +1,18 @@
+\input pstricks.tex
+\input pst-node.tex
+\nopagenumbers
+$
+\psset{linewidth=0.8pt,labelsep=0.5ex,unit=2em}
+\pcline(0,0)(1,2.5)
+\Aput{a}
+\pcline(1,2.5)(5,2.5)
+\pcline(5,2.5)(4,0)
+\pcline(4,0)(0,0)
+\Aput{b}
+\psset{linewidth=0.4pt}
+\psarc{<->}(0,0){0.8}{0}{68.2}
+\uput{0.3}[34](0,0){\varphi}
+\pcline[linestyle=dashed](3,0)(3,2.5)
+\Bput{h}
+$
+\bye

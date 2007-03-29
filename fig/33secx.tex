@@ -1,0 +1,22 @@
+\input pstfig
+\hskip 2cm
+$
+\setcoorunit{4}{1}
+\psset{yunit=0.4\psxunit}
+\psset{xunit=1.2\psxunit}
+\drawaxes{-1.2}{3.2}{-5}{5.3}
+\markxlabel{-0.5}{-\frac{\pi}{2}}{-1.5em}
+\uput[-50](0,0){\scriptstyle O}
+\markxlabel{0.5}{\frac{\pi}{2}}{1em}
+\markxlabel{1.5}{\frac{3}{2}\pi}{1.5em}
+\markxlabel{2.5}{\frac{5}{2}\pi}{1.5em}
+\psplot{-0.42}{0.42}{1/cos(x*\pinum)}
+\psplot{0.58}{1.42}{1/cos(x*\pinum)}
+\psplot{1.58}{2.42}{1/cos(x*\pinum)}
+\dashline\thinline
+\psline(-0.5,4.4)(-0.5,-4.4)
+\psline( 0.5,4.4)( 0.5,-4.4)
+\psline( 1.5,4.4)( 1.5,-4.4)
+\psline( 2.5,4.4)( 2.5,-4.4)
+$
+\bye

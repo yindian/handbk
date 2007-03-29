@@ -1,0 +1,99 @@
+%
+%
+%
+%
+\NeedsTeXFormat{LaTeX2e}[2001/06/01]
+\def\fileversion{1.0.2}
+\def\filedate{2005/05/03}
+\ProvidesPackage{mathcjk}[\filedate\space\fileversion]
+
+\endlinechar \m@ne
+
+
+
+\def\mathCJK{
+\let\math@CJK@charx\CJK@charx
+\def\CJK@charx##1##2##3##4{\mathcjk@font{\math@CJK@charx{##1}{##2}{##3}{##4}}}
+
+\let\math@CJK@char\CJK@char
+\def\CJK@char##1##2##3{\mathcjk@font{\math@CJK@char{##1}{##2}{##3}}}
+
+\let\math@CJK@punctcharx\CJK@punctcharx
+\def\CJK@punctcharx##1##2##3##4##5{\mathcjk@font{\math@CJK@punctcharx{##1}{##2}{##3}{##4}{##5}}}
+
+\let\math@CJK@punctchar\CJK@punctchar
+\def\CJK@punctchar##1##2##3##4{\mathcjk@font{\math@CJK@punctchar{##1}{##2}{##3}{##4}}}}
+
+
+\def\mathcjk@font#1{
+\ifmmode
+ \mathchoice{\textrm{\mathcjksizea #1}}{\textrm{\mathcjksizeb #1}}{\textrm{\mathcjksizec #1}}{\textrm{\mathcjksized #1}}
+\else
+ #1
+\fi}
+
+\let\mathcjk@CJKhook\CJKhook
+\def\CJKhook{
+\mathCJK
+\csname mathcjk@CJKhook\endcsname
+}
+
+
+\def\@CCTSetChar#1#2#3{\mathcjk@font{\math@CCTSetChar{#1}{#2}{#3}}}
+
+\def\math@CCTSetChar#1#2#3{%
+   \@CCTprespace
+   \@CCTlastkern=\lastkern
+   \@CCTtestpunct #1 #3%
+   \if@CCT@CJK \@CCT@CJKselfont #1 #3\fi
+   {\@CCTpre #1 #3%
+   \@CCTaccent #1 #3{%
+   \CCT@cmap@hook
+   \if@CCTispunct
+     \csname @CCTprerule\string #1\string #3\endcsname
+   \fi
+   \if@CCT@CJK
+     % Replace char 0xa1a1 which is often used for a full-size space in CCT
+     % by a \vrule, it seems CJK fonts do not like it.
+     % TODO: create a conversion table if there're more chars to convert.
+     %
+     % Warning: '\ifx#1^^a1' does not work because the \catcode of ^^a1
+     % is `other' here (it's changed to \active later).
+     \ifnum \number`#1="0A1
+       \ifnum \number`#3="0A1
+         \vrule width 1em height \z@ depth \z@
+       \else
+         \@CCT@CJKchar
+       \fi
+     \else
+       \@CCT@CJKchar
+     \fi
+   \else
+     \ccdummy\!ZiTi\DaXiao
+     \@CCTcnta=\number`#1\relax
+     \advance\@CCTcnta by -\@CCTote
+     \char\@CCTcnta
+     \@CCTcntb=\number`#3\relax
+     \@CCTspecialhack #3\relax
+     \ifnum \@CCTcntb < \@CCTote
+       \advance\@CCTcntb by \@CCTote
+     \else
+       \advance\@CCTcntb by -\@CCTote
+     \fi
+     \char\@CCTcntb
+   \fi
+   \if@CCTispunct
+     \csname @CCTpostrule\string #1\string #3\endcsname
+   \fi
+   }%
+   \@CCTpost #1 #3}\@CCTpostspace
+}
+
+\def\mathcjksizea{}
+\def\mathcjksizeb{}
+\def\mathcjksizec{\footnotesize}
+\def\mathcjksized{\footnotesize}
+
+\endlinechar `\^^M
+
+\endinput

@@ -1,0 +1,24 @@
+\input pstfig
+\hskip 2cm
+$
+\setcoorunit{4}{1}
+\psset{yunit=0.4\psxunit}
+\psset{xunit=1.2\psxunit}
+\drawaxes{-2.5}{2.6}{-5}{5.3}
+\uput[-50](0,0){\scriptstyle O}
+\markxlabel{-2}{-2\pi}{-2em}
+\markxlabel{-1}{-\pi}{-1.5em}
+\markxlabel{1}{\vphantom{2}\pi}{-1em}
+\markxlabel{2}{2\pi}{-1.5em}
+\psplot{-1.92}{-1.08}{1/sin(x*\pinum)}
+\psplot{-0.92}{-0.08}{1/sin(x*\pinum)}
+\psplot{0.08}{0.92}{1/sin(x*\pinum)}
+\psplot{1.08}{1.92}{1/sin(x*\pinum)}
+\dashline\thinline
+\psline(-2,4.4)(-2,-4.4)
+\psline(-1,4.4)(-1,-4.4)
+\psline( 0,4.4)( 0,-4.4)
+\psline( 1,4.4)( 1,-4.4)
+\psline( 2,4.4)( 2,-4.4)
+$
+\bye

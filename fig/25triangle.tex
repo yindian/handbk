@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage{CJK}
+\usepackage{epsfig}
+\input pstfig
+\begin{document}
+\begin{CJK*}{GBK}{fs}
+\pnode(0,0){A}
+\pnode(5.5,3){B}
+\pnode(5.5,0){C}
+\def\angr{1}
+\pspolygon(A)(B)(C)
+\noneline
+\pcline[offset=1.5ex](A)(B)
+\lput{:U}{Ð±\quad±ß}
+\pcline[offset=-1.5ex](0.5,0)(C)
+\lput{:U}{ÁÚ\quad±ß}
+\pcline[offset=1.5ex](B)(C)
+\lput{:U}{\rotatebox{90}{¶Ô}\quad\rotatebox{90}{±ß}}
+\thinline\solidline
+\psset{arcsepB=1pt}
+\markang(C)(A)(B){\angr}
+\uput{1.1}[15](A){$\alpha$}
+\end{CJK*}
+\end{document}

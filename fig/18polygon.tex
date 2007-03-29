@@ -1,0 +1,39 @@
+\documentclass{article}
+\def\nopagenumbers{\pagestyle{empty}}
+\input pstfig
+\usepackage{fp}
+\begin{document}
+$
+\def\myr{2.2}
+\def\smallnum{0.02}
+\FPdiv\sixthpi{\FPpi}{6}
+\FPcos\CosAlpha{\sixthpi}
+\FPdiv\myR{\myr}{\CosAlpha}
+\FPadd\myR{\myR}{\smallnum}
+\thinline
+\pscircle(0,0){\myr}
+\pnode(0, 0){O}
+\pnode(\myR; 0){A}
+\pnode(\myR; 60){B}
+\pnode(\myR; 120){C}
+\pnode(\myR; 180){D}
+\pnode(\myR; -120){E}
+\pnode(\myR; -60){F}
+%\psset{linewidth=1pt}
+\thickline
+\pspolygon(A)(B)(C)(D)(E)(F)
+\thinline
+\FPadd\myR{\myR}{\smallnum}
+\psset{labelsep=0.2ex}
+\pscircle(0,0){\myR}
+\pcline(O)(B)
+\Bput{R}
+\pcline(O)(C)
+\pcline(O)(0, \myr)
+\nLput[offset=-1ex](O)(0, \myr){0.6}{r}
+\pcline[linestyle=none](B)(C)
+\Bput{a}
+\psarc{<->}(O){0.5}{(B)}{(C)}
+\uput{0.6}[78](O){\scriptstyle\alpha}
+$
+\end{document}
