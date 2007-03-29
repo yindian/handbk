@@ -1,0 +1,29 @@
+\input pstfig
+$
+\thinline
+\pnode(0,0){O}
+\def\xmin{-3.5}	\def\xmax{3.5}
+\def\ymin{-3}	\def\ymax{3}
+\psaxes[labels=none,ticks=none,arrowlength=5,arrowinset=0.2,arrowsize=1.8pt]{->}(0,0)(\xmin,\ymin)(\xmax,\ymax)
+\uput{0.2ex}[0](\xmax,0){x}
+\uput{0.8ex}[-30](0,\ymax){y}
+\uput[-135](O){O}
+\thickline
+\pnode(-2.8,2){A}
+\pnode(A|O){B}
+\pspolygon(A)(O)(B)
+\thinline
+\markang{->}(\xmax,0)(O)(A){0.8}
+\uput{0.3}[70](O){\alpha}
+\noneline
+\pcline(O)(A)
+\Bput{r}
+\pcline(O)(B)
+\Aput{x}
+\pcline(A)(B)
+\Bput{y}
+\uput[55](A){P(x,y)}
+$
+\bye
+
+

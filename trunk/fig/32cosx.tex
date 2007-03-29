@@ -1,0 +1,15 @@
+\input pstfig
+$
+\setcoorunit{3}{1}
+\psset{yunit=0.4\psxunit}
+\drawaxes{-2.6}{5}{-3}{3.2}
+\markxlabel{-1.5}{-\frac{3}{2}\pi}{-1.5em}
+\markxlabel{-0.5}{-\frac{\pi}{2}}{1ex}
+\uput{0.3ex}[-50](0,0){\scriptstyle O}
+\markxlabel{0.5}{\frac{\pi}{2}}{-1ex}
+\markxlabel{1.5}{\frac{3}{2}\pi}{1em}
+\markxlabel{2.5}{\frac{5}{2}\pi}{-1ex}
+\markxlabel{3.5}{\frac{7}{2}\pi}{1em}
+\psplot{-2.5}{4}{cos(x*\pinum)}
+$
+\bye

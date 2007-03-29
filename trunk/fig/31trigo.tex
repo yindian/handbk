@@ -1,0 +1,52 @@
+\input pstfig
+\def\degrees{{}^{\raise 2pt\hbox{$\scriptscriptstyle\circ$}}}
+\everypsbox{\sl}
+\pspicture[-0.5](0,0)(4.7,3)
+$
+\pnode(0,0){A}
+\pnode(5.6; 30){B}
+\pnode(B|A){C}
+\pspolygon(A)(B)(C)
+\uput{1.5em}[17](O){30\degrees}
+\noneline
+\pcline(A)(B)
+\Aput{2}
+\pcline(A)(C)
+\Bput{\sqrt{3\,}}
+\pcline(B)(C)
+\Aput{1}
+$
+\endpspicture
+\pspicture(0,0)(3.8,4)
+$
+\pnode(0,0){A}
+\pnode(5; 45){B}
+\pnode(B|A){C}
+\pspolygon(A)(B)(C)
+\uput{1em}[25](O){45\degrees}
+\noneline
+\pcline(A)(B)
+\Aput{\sqrt{2\,}}
+\pcline(A)(C)
+\Bput{1}
+\pcline(B)(C)
+\Aput{1}
+$
+\endpspicture
+\pspicture(0,0)(5,3)
+$
+\pnode(0,0){A}
+\pnode(5; 60){B}
+\pnode(B|A){C}
+\pspolygon(A)(B)(C)
+\uput{0.8em}[30](O){60\degrees}
+\noneline
+\pcline(A)(B)
+\Aput{2}
+\pcline(A)(C)
+\Bput{1}
+\pcline(B)(C)
+\Aput{\sqrt{3\,}}
+$
+\endpspicture
+\bye

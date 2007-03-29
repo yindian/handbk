@@ -1,0 +1,14 @@
+\input pstfig
+$
+\def\myr{2}
+\def\myR{3}
+\pnode(0,0){O}
+\pscircle(O){\myr}
+\pscircle(O){\myR}
+\thinline
+\psline(O)(\myR; 90)
+\thinline
+\psbrace[nodesepA= 0.2ex,linewidth=0.4pt,ref=lC](L)(\myR; 90){R}
+\psbrace[nodesepA=-0.2ex,linewidth=0.4pt,ref=rC,rot=180](\myr; 90)(L){r}
+$
+\bye

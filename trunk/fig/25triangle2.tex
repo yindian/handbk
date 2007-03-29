@@ -1,0 +1,27 @@
+\input pstfig
+\vrule height 15em width 0pt
+$
+\thinline
+\pnode(0,0){O}
+\psaxes[labels=none,ticks=none,arrowlength=5,arrowinset=0.2,arrowsize=1.8pt]{->}(0,0)(-3,-3)(4,3.5)
+\uput[-45](4,0){x}
+\uput{1ex}[0](0,3.5){y}
+\uput[-135](O){O}
+\thickline
+\pnode(3,2){A}
+\pnode(A|O){B}
+\pspolygon(A)(O)(B)
+\thinline
+\markang{->}(B)(O)(A){0.9}
+\uput{0.4}[18](O){\alpha}
+\noneline
+\pcline(O)(A)
+\Aput{r}
+\pcline(O)(B)
+\Bput{x}
+\pcline(A)(B)
+\Aput{y}
+\uput[20](A){P(x,y)}
+$
+\bye
+

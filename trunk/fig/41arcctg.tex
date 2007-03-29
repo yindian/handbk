@@ -1,0 +1,25 @@
+\input pstfig
+$
+\setcoorunit{4}{1}
+\psset{xunit=0.4\psyunit}
+%\drawaxes{-2.6}{5}{-3}{3.2}
+\drawaxes{-3.5}{4}{-1.4}{2.4}
+\markxlabel{0}{\scriptstyle O}{1em}
+\uput[-45](0,2){2\pi}
+\uput[-45](0,1){\pi}
+\uput{1ex}[-180](0, 0.35){\nfrac{\pi}{2}}
+\uput[-45](0,-1){-\pi}
+%\psset{showpoints=true}
+\psplot[algebraic=false]{ 0}{3}{0.5 x 1 atan 180 div sub}
+\psplot[algebraic=false]{-3}{-0.0001}{0.5 x 1 atan 180 div sub 2 add}
+\thinline
+\psplot[algebraic=false]{ 0}{3}{0.5 x 1 atan 180 div sub 1 add}
+\psplot[algebraic=false]{-3}{-0.0001}{0.5 x 1 atan 180 div sub 2 add 1 add}
+\psplot[algebraic=false]{ 0}{3}{0.5 x 1 atan 180 div sub 1 sub}
+\psplot[algebraic=false]{-3}{-0.0001}{0.5 x 1 atan 180 div sub 2 add 1 sub}
+\dashline
+\psline(-3, -1)(3, -1)
+\psline(-3,  1)(3,  1)
+\psline(-3,  2)(3,  2)
+$
+\bye

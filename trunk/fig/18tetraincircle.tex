@@ -1,0 +1,21 @@
+\input pstfig
+$
+\def\myR{2.2}
+\thinline
+\pscircle(0,0){\myR}
+\thickline
+\psset{labelsep=0.2ex}
+\pnode(\myR; 135){A}
+\pnode(\myR; 45 ){B}
+\pnode(\myR; -30){C}
+\pnode(\myR; -80){D}
+\pcline(A)(B)
+\Bput{a}
+\pcline(B)(C)
+\Bput{d}
+\pcline(C)(D)
+\Bput{c}
+\pcline(D)(A)
+\Bput{b}
+$
+\bye

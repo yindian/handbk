@@ -1,0 +1,20 @@
+\input pstfig
+$
+\setcoorunit{4}{1}
+\psset{xunit=0.4\psyunit}
+%\drawaxes{-2.6}{5}{-3}{3.2}
+\drawaxes{-2.8}{2.8}{-1.4}{1.75}
+\markylabel{-1}{\raise 0pt\hbox{$-\pi$}}{-1pt}
+\markxlabel{0}{\scriptstyle O}{1em}
+\markylabel{1}{\raise 0pt\hbox{$\pi$}}{1pt}
+\psplot{-1}{1}{acos(x)/\pinum}
+\thinline
+\psplot{-1}{0}{2-acos(x)/\pinum}
+\psplot{-1}{1}{-acos(x)/\pinum}
+\psplot{-1}{-0.55}{-2+acos(x)/\pinum}
+\dashline
+\psline(-1, -1.33)(-1, 1.52)
+\psline( 1, -1.33)( 1, 1.52)
+\psline(-1, -1)(0, -1)
+$
+\bye

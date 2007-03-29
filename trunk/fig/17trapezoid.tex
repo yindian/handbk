@@ -1,0 +1,30 @@
+\input pstfig
+$
+\psset{linewidth=0.8pt,labelsep=0.5ex,unit=2em}
+\pnode(0,0){A}
+\pnode(6,0){B}
+\pnode(2,  3){D}
+\pnode(5.5,3){C}
+\pnode(2, 0){H}
+\pcline(A)(B)
+\Bput{a_2}
+\pcline(B)(C)
+\pcline(C)(D)
+\Bput{a_1}
+\pcline(D)(A)
+\psset{linewidth=0.4pt}
+\pcline[linestyle=dashed](A)(C)
+\pcline[linestyle=dashed](B)(D)
+\pcline[linestyle=dashed](D)(H)
+\Bput{h}
+\psIntersectionPoint(A)(C)(B)(D){P}
+%\setLCNode(A){1}(P){-1}{PA}
+%\setLCNode(B){1}(P){-1}{PB}
+\setLDNode(P)(A){0.4}{Pma}
+\setLDNode(P)(B){0.4}{Pmb}
+%\psarc{<->}(P){0.4}{(PA)}{(PB)}
+\pcarc[arcangleA=-30,arcangleB=-30]{<->}(Pma)(Pmb)
+\Bput{\varphi}
+$
+\bye
+

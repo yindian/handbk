@@ -1,0 +1,21 @@
+\input pstfig
+$
+\setcoorunit{3}{1}
+\psset{yunit=0.4\psxunit}
+\def\markxlabel#1#2#3{%	\markxlabel{pos}{label}{offset}
+\uput[-90](#1, 0){\hskip #3 #2}
+}
+%\def\pshlabel#1{ \ifnum #1 = 1 $\pi$ \else	\ifnum #1 = -1 $-\pi$ \else $#1\pi$ \fi \fi }
+%\drawaxes[labels=x,ticks=x,ticksize=0pt]{-2.9}{5}{-2.5}{2.5}
+\drawaxes{-2.6}{5}{-3}{3.2}
+\markxlabel{-2}{-2\pi}{0pt}
+\markxlabel{-1}{-\pi}{-1em}
+\markxlabel{0}{\scriptstyle O}{1em}
+\markxlabel{1}{\vphantom{-}\pi}{-1ex}
+\markxlabel{2}{2\pi}{1em}
+\markxlabel{3}{\strut3\pi}{-1ex}
+\markxlabel{4}{4\pi}{1em}
+\psplot{-2}{4}{sin(x*\pinum)}
+%\psplot[algebraic=false]{-2}{4}{x 180 mul sin}
+$
+\bye

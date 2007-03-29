@@ -1,0 +1,25 @@
+\input pstfig
+$
+\def\myR{1.8}
+\def\myr{0.6}
+\def\myH{4.7}
+\pnode(0,0){O}
+\pnode(\myR, 0){A}
+\pnode(-\myR, 0){B}
+\pnode(0, \myH){S}
+%\psellipse[angleA=180,angleB=0](O)(\myR, \myr)
+\psellipticarc(O)(\myR, \myr){180}{0}
+\psline(A)(S)(B)
+\noneline
+\pcline(S)(B)
+\Bput{l}
+\thinline
+\dashline
+\psellipticarc(O)(\myR, \myr){0}{180}
+\pcline(S)(O)
+\psset{labelsep=0.2ex}
+\Aput{H}
+\pcline(O)(A)
+\nLput[offset=-1.2ex](O)(A){0.4}{R}
+$
+\bye

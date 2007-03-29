@@ -1,0 +1,22 @@
+\input pstfig
+\hskip 2cm
+$
+\setcoorunit{4}{1}
+\psset{yunit=0.3\psxunit}
+\psset{xunit=1.2\psxunit}
+\drawaxes{-2.1}{2.5}{-5.7}{6}
+\markxlabel{-1.5}{-\frac{3}{2}\pi}{-2.1em}
+\markxlabel{-0.5}{-\frac{\pi}{2}}{-1.5em}
+\uput[-50](0,0){\scriptstyle O}
+\markxlabel{0.5}{\frac{\pi}{2}}{1em}
+\markxlabel{1.5}{\frac{3}{2}\pi}{1.5em}
+\psplot{-0.44}{0.44}{tan(x*\pinum)}
+\psplot{-1.44}{-0.56}{tan(x*\pinum)}
+\psplot{0.56}{1.44}{tan(x*\pinum)}
+\dashline\thinline
+\psline(-1.5,5.3)(-1.5,-5.3)
+\psline(-0.5,5.3)(-0.5,-5.3)
+\psline( 0.5,5.3)( 0.5,-5.3)
+\psline( 1.5,5.3)( 1.5,-5.3)
+$
+\bye

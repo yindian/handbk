@@ -1,0 +1,97 @@
+%	Define Chinese fontsize support
+\newcommand{\zhfseightsize}{5.02}   	\newcommand{\zhfseightskip	}{6.02}   %八号字    5bp
+\newcommand{\zhfssevensize}{5.52}   	\newcommand{\zhfssevenskip	}{6.62}   %七号字  5.5bp
+\newcommand{\zhfsssixsize}{6.52}    	\newcommand{\zhfsssixskip	}{7.83}    %小六号  6.5bp
+\newcommand{\zhfssixsize}{7.53}     	\newcommand{\zhfssixskip	}{9.03}     %六号字  7.5bp
+\newcommand{\zhfssfivesize}{9.03}   	\newcommand{\zhfssfiveskip	}{10.84}  %小五号    9bp
+\newcommand{\zhfsfivesize}{10.54}   	\newcommand{\zhfsfiveskip	}{12.65}   %五号字 10.5bp
+\newcommand{\zhfssfoursize}{12.05}  	\newcommand{\zhfssfourskip	}{14.45}  %小四号   12bp
+\newcommand{\zhfsfoursize}{14.05}   	\newcommand{\zhfsfourskip	}{16.86}   %四号字   14bp
+\newcommand{\zhfssthreesize}{15.06} 	\newcommand{\zhfssthreeskip	}{18.07} %小三号   15bp
+\newcommand{\zhfsthreesize}{16.06}  	\newcommand{\zhfsthreeskip	}{19.27}  %三号字   16bp
+\newcommand{\zhfsstwosize}{18.07}   	\newcommand{\zhfsstwoskip	}{21.68}   %小二号   18bp
+\newcommand{\zhfstwosize}{22.08}    	\newcommand{\zhfstwoskip	}{26.50}    %二号字   22bp
+\newcommand{\zhfssonesize}{24.09}   	\newcommand{\zhfssoneskip	}{28.91}   %小一号   24bp
+\newcommand{\zhfsonesize}{26.10}    	\newcommand{\zhfsoneskip	}{31.32}    %一号字   26bp
+\newcommand{\zhfsszerosize}{36.14}  	\newcommand{\zhfsszeroskip	}{43.36}  %小初号   36bp
+\newcommand{\zhfszerosize}{42.16}   	\newcommand{\zhfszeroskip	}{50.59}   %初号字   42bp
+\newcommand{\zhfseight}{\fontsize{\zhfseightsize}{\zhfseightskip}\selectfont}
+\newcommand{\zhfsseight}{\fontsize{\zhfsseightsize}{\zhfsseightskip}\selectfont}
+\newcommand{\zhfsseven}{\fontsize{\zhfssevensize}{\zhfssevenskip}\selectfont}
+\newcommand{\zhfssseven}{\fontsize{\zhfsssevensize}{\zhfsssevenskip}\selectfont}
+\newcommand{\zhfssix}{\fontsize{\zhfssixsize}{\zhfssixskip}\selectfont}
+\newcommand{\zhfsssix}{\fontsize{\zhfsssixsize}{\zhfsssixskip}\selectfont}
+\newcommand{\zhfsfive}{\fontsize{\zhfsfivesize}{\zhfsfiveskip}\selectfont}
+\newcommand{\zhfssfive}{\fontsize{\zhfssfivesize}{\zhfssfiveskip}\selectfont}
+\newcommand{\zhfsfour}{\fontsize{\zhfsfoursize}{\zhfsfourskip}\selectfont}
+\newcommand{\zhfssfour}{\fontsize{\zhfssfoursize}{\zhfssfourskip}\selectfont}
+\newcommand{\zhfsthree}{\fontsize{\zhfsthreesize}{\zhfsthreeskip}\selectfont}
+\newcommand{\zhfssthree}{\fontsize{\zhfssthreesize}{\zhfssthreeskip}\selectfont}
+\newcommand{\zhfstwo}{\fontsize{\zhfstwosize}{\zhfstwoskip}\selectfont}
+\newcommand{\zhfsstwo}{\fontsize{\zhfsstwosize}{\zhfsstwoskip}\selectfont}
+\newcommand{\zhfsone}{\fontsize{\zhfsonesize}{\zhfsoneskip}\selectfont}
+\newcommand{\zhfssone}{\fontsize{\zhfssonesize}{\zhfssoneskip}\selectfont}
+\newcommand{\zhfszero}{\fontsize{\zhfszerosize}{\zhfszeroskip}\selectfont}
+\newcommand{\zhfsszero}{\fontsize{\zhfsszerosize}{\zhfsszeroskip}\selectfont}
+
+\newif\ifusefancyhdr
+\usefancyhdrtrue
+\ifusefancyhdr
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+%\renewcommand{\sectionmark}[1]{\markright{\CJKnumber{\arabic{section}}、#1}}		% \rightmark is the first
+%\renewcommand{\subsectionmark}[1]{\markboth{\thesubsection. #1}{}}	% \leftmark is the last
+\renewcommand{\sectionmark}[1]{\markboth{~\CJKnumber{\arabic{section}}、#1}{\CJKnumber{\arabic{section}}、#1~}}
+\renewcommand{\subsectionmark}[1]{\markright{\thesubsection. #1~}}
+\fancyhead[LO,RE]{\fontsize{8}{9}\selectfont \CJKfamily{fs}\ 数学手册\ }
+%\fancyhead[RO]{\fontsize{8}{9}\selectfont \leftmark}
+%\fancyhead[LE]{\fontsize{8}{9}\selectfont \rightmark}
+\fancyhead[RO]{\fontsize{8}{9}\selectfont \rightmark}
+\fancyhead[LE]{\fontsize{8}{9}\selectfont \leftmark}
+\fancyfoot[RO,LE]{\itshape\fontsize{9}{11}\selectfont\thepage}
+\else
+\usepackage{titlesec}
+\newpagestyle{toc}{%
+	\setmarks{section}{subsection}
+	\headrule
+	\sethead[\fontsize{8}{9}\selectfont {\sectiontitle}]
+		[]
+		[\fontsize{8}{9}\selectfont \CJKfamily{fs}\ 数学手册\ ]
+		{\fontsize{8}{9}\selectfont \CJKfamily{fs}\ 数学手册\ }
+		{}
+		{\fontsize{8}{9}\selectfont {\sectiontitle}}
+	\setfoot[\itshape\fontsize{9}{11}\selectfont\thepage]
+		[]
+		[]
+		{}
+		{}
+		{\itshape\fontsize{9}{11}\selectfont\thepage}
+}
+\newcommand{\thesectionmark}{\CJKnumber{\arabic{section}}、\sectiontitle}
+\newcommand{\thesubsectionmark}{\thesubsection. \subsectiontitle}
+%	Problem: cannot mark after a new page or mark a subsection after a section.
+\newpagestyle{main}{%
+	\setmarks{section}{subsection}
+	\headrule
+	\sethead[\fontsize{8}{9}\selectfont \toptitlemarks\thesectionmark]
+		[]
+		[\fontsize{8}{9}\selectfont \CJKfamily{fs}\ 数学手册\ ]
+		{\fontsize{8}{9}\selectfont \CJKfamily{fs}\ 数学手册\ }
+		{}
+		{\fontsize{8}{9}\selectfont \toptitlemarks\thesubsectionmark}
+	\setfoot[\itshape\fontsize{9}{11}\selectfont\thepage]
+		[]
+		[]
+		{}
+		{}
+		{\itshape\fontsize{9}{11}\selectfont\thepage}
+}
+\fi
+
+%%	PSTricks
+%\usepackage{pstricks, pst-node}
+%\def\Nmatrix{\vcenter\bgroup\hbox\bgroup\catcode`\&=4 $\psmatrix[rowsep=0.3ex,colsep=1.5ex]}
+%\def\endNmatrix{\endpsmatrix$\egroup\egroup}
+%\def\Ndetmat{\hbox\bgroup$\delimiterfactor=1025\left\lvert\vcenter\bgroup\hbox\bgroup\catcode`\&=4 $\psmatrix[rowsep=0.3ex,colsep=1.5ex]}
+%\def\endNdetmat{\endpsmatrix$\egroup\egroup\right\rvert$\egroup}

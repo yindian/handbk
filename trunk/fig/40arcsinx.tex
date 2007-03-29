@@ -1,0 +1,26 @@
+\input pstfig
+$
+\setcoorunit{4}{1}
+\psset{xunit=0.4\psyunit}
+%\drawaxes{-2.6}{5}{-3}{3.2}
+\drawaxes{-2.8}{2.8}{-1.4}{1.75}
+\markylabel{-1}{\raise 2pt\hbox{$-\pi$}}{-1pt}
+\markylabel{-0.5}{\raise -1.3em\hbox{$-\!\nfrac{\pi}{2}$}}{-1pt}
+\markxlabel{0}{\scriptstyle O}{1em}
+\markylabel{0.5}{\raise -8pt\hbox{$\nfrac{\pi}{2}$}}{0ex}
+\markylabel{1}{\raise 2pt\hbox{$\pi$}}{1pt}
+%\markylabel{-1}{\raise 2pt\hbox{$\scriptstyle-\pi$}}{0em}
+%\markylabel{-0.5}{\raise -8pt\hbox{$\scriptstyle-\!\frac{\scriptstyle\pi}{\scriptstyle2}$}}{0ex}
+%\markxlabel{0}{\scriptstyle O}{1em}
+%\markylabel{0.5}{\scriptstyle\frac{\scriptstyle\pi}{\scriptstyle2}}{0ex}
+%\markylabel{1}{\raise 2pt\hbox{$\scriptstyle\pi$}}{1pt}
+\psplot{-1}{1}{asin(x)/\pinum}
+\thinline
+\psplot{-1}{1}{1-asin(x)/\pinum}
+\psplot{-1}{0.8}{-1-asin(x)/\pinum}
+\dashline
+\psline(-1, -1.33)(-1, 1.52)
+\psline( 1, -1.33)( 1, 1.52)
+\psline(-1, -0.5 )( 0, -0.5)
+$
+\bye

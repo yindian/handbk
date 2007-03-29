@@ -1,0 +1,18 @@
+\input pstricks.tex
+\input pst-node.tex
+\nopagenumbers
+$
+\psset{linewidth=0.8pt,unit=2em,labelsep=0.5ex}
+\pcline(0,0)(2,4)
+\Aput{c}
+\pcline(0,0)(6.5,0)
+\Bput{b}
+\pcline(2,4)(6.5,0)
+\Aput{a}
+\pcline[linewidth=0.4pt,linestyle=dashed](2,4)(2,0)
+\Aput{h}
+\uput[dl](0,0){A}
+\uput[u](2,4){B}
+\uput[dr](6.5,0){C}
+$
+\bye

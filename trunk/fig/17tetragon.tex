@@ -1,0 +1,23 @@
+\input pstfig
+$
+\pnode(0,	2	){A}
+\pnode(2.5,	3	){B}
+\pnode(5.5,	0.3	){C}
+\pnode(0.5,	0	){D}
+\pcline(A)(B)
+\pcline(B)(C)
+\pcline(C)(D)
+\pcline(D)(A)
+\thinline\dashline
+\pcline(A)(C)
+\nLput[offset=-1.5ex](A)(C){0.55}{d_2}
+\pcline(B)(D)
+\nLput[offset=1.5ex](B)(D){0.3}{d_1}
+\psIntersectionPoint(A)(C)(B)(D){P}
+\setLCNode(C){1}(P){-1}{PC}
+\setLCNode(D){1}(P){-1}{PD}
+\solidline
+\psarc{<->}(P){0.6}{(PD)}{(PC)}
+\nput[labelsep=0.8ex]{-70}{P}{\varphi}
+$
+\bye
